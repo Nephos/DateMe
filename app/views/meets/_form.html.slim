@@ -1,0 +1,21 @@
+= form_for @meet do |f|
+  - if @meet.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@meet.errors.count, "error")} prohibited this meet from being saved:"
+      ul
+        - @meet.errors.full_messages.each do |message|
+          li = message
+
+  .field
+    = f.label :name
+    = f.text_field :name
+  .field
+    = f.label :description
+    = f.text_field :description
+  .field
+    = f.label :end_at
+    = f.datetime_select :end_at
+  .field
+    = f.label :dates
+    = f.text_area :dates, size: "80x20", value: @meet.dates.to_json
+  .actions = f.submit
