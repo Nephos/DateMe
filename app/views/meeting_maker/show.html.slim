@@ -22,7 +22,7 @@ p
     = f.error_span(:date)
   = f.hidden_field :meeting_id, :class => 'form-control', :value => @meeting.id
   .form-group
-    = f.submit nil, :class => 'btn btn-primary btn-sm'
+    = f.submit nil, :class => 'btn btn-primary btn-xs'
 
 - users = @meeting.users.order(:id).uniq.to_a
 table.table-condensed
