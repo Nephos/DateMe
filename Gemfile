@@ -73,4 +73,4 @@ gem 'highcharts-rails'
 
 # Pagination
 gem 'will_paginate'
-gem 'bootstrap-will_paginate'
+#gem 'bootstrap-will_paginate'

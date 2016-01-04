@@ -7,6 +7,8 @@ class UserDatesController < PrivateController
   # GET /user_dates.json
   def index
     @user_dates = UserDate.all
+    #@user_dates = @user_dates.joins(:meeting_date, :meeting_date => :meeting).where(meetings: {user: current_user}) unless current_user.admin?
+    @user_dates = @user_dates.paginate(:page => params[:page])
   end
 
   # GET /user_dates/1

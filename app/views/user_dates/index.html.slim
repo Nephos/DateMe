@@ -23,4 +23,8 @@ table.table.table-striped
           '
           = link_to t('.destroy', :default => t("helpers.links.destroy")), user_date_path(user_date), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-xs btn-danger'
 
-= link_to t('.new', :default => t("helpers.links.new")), new_user_date_path, :class => 'btn btn-primary'
+.row
+  .col-md-6
+    = link_to t('.new', :default => t("helpers.links.new")), new_user_date_path, :class => 'btn btn-primary'
+  .col-md-6
+    = will_paginate @user_dates
