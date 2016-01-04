@@ -17,7 +17,7 @@ table.table.table-striped
         td= user_date.user_id
         td= user_date.meeting_date_id
         td= user_date.state
-        td=l user_date.created_at
+        td= user_date.created_at&.strftime("%Y-%m-%d")
         td
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_user_date_path(user_date), :class => 'btn btn-default btn-xs'
           '

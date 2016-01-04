@@ -17,7 +17,7 @@ table.table.table-striped
         td= meeting_date.date
         td= meeting_date.meeting_id
         td= meeting_date.note
-        td=l meeting_date.created_at
+        td= meeting_date.created_at&.strftime("%Y-%m-%d")
         td
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_meeting_date_path(meeting_date), :class => 'btn btn-default btn-xs'
           '
