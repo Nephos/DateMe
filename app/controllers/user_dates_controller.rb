@@ -66,7 +66,7 @@ class UserDatesController < PrivateController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user_date
-      @user_date = UserDate.find(params[:id])
+      @user_date = UserDate.find(params[:id] || params[:user_date_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -66,7 +66,8 @@ class UsersController < PrivateController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      @user = User.find(params[:id] || params[:user_id])
+      #@user ||= UserDate.find(params[:user_date_id]).user if params[:user_date_id]
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

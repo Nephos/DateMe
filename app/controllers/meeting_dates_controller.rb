@@ -66,7 +66,8 @@ class MeetingDatesController < PrivateController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_meeting_date
-      @meeting_date = MeetingDate.find(params[:id])
+      @meeting_date = MeetingDate.find(params[:id] || params[:meeting_date_id])
+      #@meeting_date ||= UserDate.find(params[:user_date_id]).meeting_date if params[:user_date_id]
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
