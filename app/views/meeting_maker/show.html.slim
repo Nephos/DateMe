@@ -26,7 +26,7 @@ table.table-condensed
     - @meeting.meeting_dates.each_with_index do |meeting_date|
       tr
         th= meeting_date.date
-        - dates = meeting_date.user_dates.pluck(:user_id)
+        - dates = meeting_date.user_dates.to_a.map(&:user_id)
         - users.map(&:id).each do |user_id|
           - present = dates.include?(user_id)
           td class="#{present ? 'bg-success' : 'bg-danger'}"
