@@ -10,6 +10,7 @@ class MeetingMakerController < PrivateController
 
   def show
     @meeting = Meeting.eager_load(:users, :user_dates, :meeting_dates => :user_dates).find(params[:id])
+    @meeting_date = MeetingDate.new
     #redirect_to root_url, alert: "Not ready yet"
   end
 end
