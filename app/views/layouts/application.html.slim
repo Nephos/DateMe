@@ -28,12 +28,13 @@ html lang="en"
           a.navbar-brand href="#"DateMe
           .navbar-collapse.collapse.navbar-responsive-collapse
             ul.nav.navbar-nav
+              li= link_to "Meetings Maker", make_new_meetings_path
               li= link_to "Meetings", meetings_path
               li= link_to "Meeting Dates", meeting_dates_path
               li= link_to "User Dates", user_dates_path
               li= link_to "Users", users_path
 
-    .container
+    .container        
       .row
         .col-lg-9
           = bootstrap_flash

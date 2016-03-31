@@ -14,7 +14,11 @@ p
   strong= model_class.human_attribute_name(:end_at) + ':'
   br
   = @meeting.end_at
-
+p
+  strong= model_class.human_attribute_name(:user_id) + ':'
+  br
+  = @meeting.user_id
+    
 = link_to t('.back', :default => t("helpers.links.back")), meetings_path, :class => 'btn btn-default'
 '
 = link_to t('.edit', :default => t("helpers.links.edit")), edit_meeting_path(@meeting), :class => 'btn btn-default'

@@ -1,0 +1,2 @@
+module MeetingMakerHelper
+end

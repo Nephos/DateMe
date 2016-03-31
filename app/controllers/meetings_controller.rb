@@ -69,7 +69,7 @@ class MeetingsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def meeting_params
-      p = params.require(:meeting).permit(:name, :description, :end_at, :dates)
+      p = params.require(:meeting).permit(:name, :description, :end_at, :user_id)
       p["dates"] = JSON.parse(p["dates"]) if p["dates"]
       p
     end
