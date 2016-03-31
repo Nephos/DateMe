@@ -1,0 +1,32 @@
+.page-header
+  h1
+    | Meeting #{@meeting.name}
+
+p
+  strong= Meeting.human_attribute_name(:description) + ':'
+  br
+  = @meeting.description
+p
+  strong= Meeting.human_attribute_name(:end_at) + ':'
+  br
+  = @meeting.end_at
+p
+  strong= Meeting.human_attribute_name(:user_id) + ':'
+  br
+  = @meeting.user_name
+
+- users = @meeting.users.order(:id).uniq.to_a
+table.table-condensed
+  thead
+    tr
+      th
+      - users.each do |user|
+        td= user.name + "(#{user.id})"
+  tbody
+    - @meeting.meeting_dates.each_with_index do |meeting_date|
+      tr
+        th= meeting_date.date
+        - dates = meeting_date.user_dates.pluck(:user_id)
+        - users.map(&:id).each do |user_id|
+          - present = dates.include?(user_id)
+          td class="#{present ? 'bg-success' : 'bg-danger'}"

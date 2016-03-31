@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     collection do
       get "make", controller: "meeting_maker", action: "new", as: "make_new"
       post "make", controller: "meeting_maker", action: "create", as: "make"
-      get "share", controller: "meeting_maker", action: "show", as: "share"
+      get "share/:id", controller: "meeting_maker", action: "show", as: "share"
     end
   end
 

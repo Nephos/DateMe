@@ -1,6 +1,7 @@
 class MeetingMakerController < PrivateController
   def new
-    redirect_to root_url, alert: "Not ready yet"
+    @meeting = Meeting.new
+    #redirect_to root_url, alert: "Not ready yet"
   end
 
   def create
@@ -8,6 +9,7 @@ class MeetingMakerController < PrivateController
   end
 
   def show
-    redirect_to root_url, alert: "Not ready yet"
+    @meeting = Meeting.find(params[:id])
+    #redirect_to root_url, alert: "Not ready yet"
   end
 end

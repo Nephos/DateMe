@@ -14,4 +14,10 @@ class User < ActiveRecord::Base
   def admin?
     roles.include? "admin"
   end
+
+  NAME_MAX_LENGHT = 8
+  def name
+    self.email.split("@").first.first(NAME_MAX_LENGHT)
+  end
+
 end
