@@ -1,9 +1,9 @@
-= form_for @meet do |f|
-  - if @meet.errors.any?
+= form_for @meeting do |f|
+  - if @meeting.errors.any?
     #error_explanation
-      h2 = "#{pluralize(@meet.errors.count, "error")} prohibited this meet from being saved:"
+      h2 = "#{pluralize(@meeting.errors.count, "error")} prohibited this meeting from being saved:"
       ul
-        - @meet.errors.full_messages.each do |message|
+        - @meeting.errors.full_messages.each do |message|
           li = message
 
   .field
@@ -17,5 +17,5 @@
     = f.datetime_select :end_at
   .field
     = f.label :dates
-    = f.text_area :dates, size: "80x20", value: @meet.dates.to_json
+    = f.text_area :dates, size: "80x20", value: @meeting.dates.to_json
   .actions = f.submit

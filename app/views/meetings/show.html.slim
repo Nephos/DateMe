@@ -1,0 +1,38 @@
+p#notice = notice
+
+p
+  strong Name:
+  = @meeting.name
+p
+  strong Description:
+  = @meeting.description
+p
+  strong End at:
+  = @meeting.end_at
+p
+  strong Dates:
+  .row
+    .col-md-6
+      table.table.table-condensed
+        tr
+          / span for #{meeting.dates.size} columns
+          th Date
+          th
+        tr
+          th
+          - @meeting.dates.keys.sort.each do |date|
+            th = date
+        - @meeting.dates.values.flatten.uniq.sort.each do |sub|
+          tr
+            th = sub
+            - @meeting.dates.keys.sort.each do |date|
+              - if @meeting.dates[date].include? sub
+                td yes
+              - else
+                td no
+
+= link_to 'Edit', edit_meeting_path(@meeting)
+'|
+= link_to 'Back', meetings_path
+
+/ = console
