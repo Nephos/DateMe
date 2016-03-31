@@ -71,6 +71,6 @@ class UserDatesController < PrivateController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_date_params
-      params.require(:user_date).permit(:user_id, :meeting_date_id)
+      params.require(:user_date).permit(:user_id, :meeting_date_id, :state)
     end
 end
