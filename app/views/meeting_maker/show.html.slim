@@ -18,7 +18,7 @@ p
 = form_for @meeting_date, {data: {type: :json}, remote: true, html: { class: "form form-inline meeting_date" }} do |f|
   .form-group
     = f.label :date, :class => 'control-label col-lg-2'
-      = f.date_field :date, :class => 'form-control input-sm'
+      = f.datetime_field :date, :class => 'form-control input-sm'
     = f.error_span(:date)
   = f.hidden_field :meeting_id, :class => 'form-control', :value => @meeting.id
   .form-group
