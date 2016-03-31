@@ -1,6 +1,6 @@
 # Infos
 
-The project allows you to organise your meetings by sharing pools.
+The project allows you to manage your meetings by sharing pools.
 
 # How does it work
 

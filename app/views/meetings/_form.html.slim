@@ -1,21 +1,21 @@
-= form_for @meeting do |f|
-  - if @meeting.errors.any?
-    #error_explanation
-      h2 = "#{pluralize(@meeting.errors.count, "error")} prohibited this meeting from being saved:"
-      ul
-        - @meeting.errors.full_messages.each do |message|
-          li = message
-
-  .field
-    = f.label :name
-    = f.text_field :name
-  .field
-    = f.label :description
-    = f.text_field :description
-  .field
-    = f.label :end_at
-    = f.datetime_select :end_at
-  .field
-    = f.label :dates
-    = f.text_area :dates, size: "80x20", value: @meeting.dates.to_json
-  .actions = f.submit
+= form_for @meeting, html: { class: "form form-horizontal meeting" } do |f|
+  .form-group
+    = f.label :name, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :name, :class => 'form-control'
+    = f.error_span(:name)
+  .form-group
+    = f.label :description, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :description, :class => 'form-control'
+    = f.error_span(:description)
+  .form-group
+    = f.label :end_at, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :end_at, :class => 'form-control'
+    = f.error_span(:end_at)
+  .form-group
+    .col-lg-offset-2.col-lg-10
+      = f.submit nil, :class => 'btn btn-primary'
+      '
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), meetings_path, :class => 'btn'

@@ -35,7 +35,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
-  gem 'pry'
+  gem 'pry-rails'
   #gem 'sqlite3'
 end
 
@@ -47,9 +47,24 @@ group :development do
   gem 'spring'
 end
 
-gem 'highcharts-rails'
+### Back
+
+gem 'devise'
+
+### Front
+
+# Template
 gem 'slim-rails'
-gem 'bootstrap-sass'
-#gem 'sass-rails'
+
+# Bootstrap
+gem "therubyracer"
+# Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
+gem "less-rails"
+gem "twitter-bootstrap-rails"
+
+# Charts
+gem 'highcharts-rails'
+
+# Pagination
 gem 'will_paginate'
 gem 'bootstrap-will_paginate'

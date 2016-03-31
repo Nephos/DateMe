@@ -1,38 +1,22 @@
-p#notice = notice
+- model_class = Meeting
+.page-header
+  h1=t '.title', :default => model_class.model_name.human.titleize
 
 p
-  strong Name:
+  strong= model_class.human_attribute_name(:name) + ':'
+  br
   = @meeting.name
 p
-  strong Description:
+  strong= model_class.human_attribute_name(:description) + ':'
+  br
   = @meeting.description
 p
-  strong End at:
+  strong= model_class.human_attribute_name(:end_at) + ':'
+  br
   = @meeting.end_at
-p
-  strong Dates:
-  .row
-    .col-md-6
-      table.table.table-condensed
-        tr
-          / span for #{meeting.dates.size} columns
-          th Date
-          th
-        tr
-          th
-          - @meeting.dates.keys.sort.each do |date|
-            th = date
-        - @meeting.dates.values.flatten.uniq.sort.each do |sub|
-          tr
-            th = sub
-            - @meeting.dates.keys.sort.each do |date|
-              - if @meeting.dates[date].include? sub
-                td yes
-              - else
-                td no
 
-= link_to 'Edit', edit_meeting_path(@meeting)
-'|
-= link_to 'Back', meetings_path
-
-/ = console
+= link_to t('.back', :default => t("helpers.links.back")), meetings_path, :class => 'btn btn-default'
+'
+= link_to t('.edit', :default => t("helpers.links.edit")), edit_meeting_path(@meeting), :class => 'btn btn-default'
+'
+= link_to t('.destroy', :default => t("helpers.links.destroy")), meeting_path(@meeting), :method => "delete", :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-danger'
