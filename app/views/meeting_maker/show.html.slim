@@ -20,7 +20,7 @@ p
     = f.label :date, :class => 'control-label col-lg-2'
       = f.date_field :date, :class => 'form-control input-sm'
     = f.error_span(:date)
-  = f.hidden_field :meeting_id, :class => 'form-control'
+  = f.hidden_field :meeting_id, :class => 'form-control', :value => @meeting.id
   .form-group
     = f.submit nil, :class => 'btn btn-primary btn-sm'
 
