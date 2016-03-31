@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
     self.attributes["roles"].to_s.split(",")
   end
 
-  def is_admin
+  def admin?
     roles.include? "admin"
   end
 end

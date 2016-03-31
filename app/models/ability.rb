@@ -9,7 +9,7 @@ class Ability
     can :read, UserDate
     can :manage, Meeting, :user_id => user.id
 
-    can :manage, :all if user.is_admin
+    can :manage, :all if user.admin?
     #can :manage, :all, user.is_admin => true
     #cannot :manage, :all, user.is_admin => false
 

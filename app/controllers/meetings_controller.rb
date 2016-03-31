@@ -1,4 +1,4 @@
-class MeetingsController < ApplicationController
+class MeetingsController < PrivateController
   load_and_authorize_resource
 
   #before_action :set_meeting, only: [:show, :edit, :update, :destroy]

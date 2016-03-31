@@ -14,3 +14,9 @@ Install ruby 2, and ruby gems.
 ## Start
 
     rails s
+
+## Features to come
+
+- Comments
+- Emailing
+- Pseudo

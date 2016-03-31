@@ -1,4 +1,4 @@
-class MeetingMakerController < ApplicationController
+class MeetingMakerController < PrivateController
   def new
     redirect_to root_url, alert: "Not ready yet"
   end

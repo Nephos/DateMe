@@ -1,4 +1,4 @@
-class UserDatesController < ApplicationController
+class UserDatesController < PrivateController
   load_and_authorize_resource
 
   #before_action :set_user_date, only: [:show, :edit, :update, :destroy]
