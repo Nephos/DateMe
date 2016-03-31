@@ -6,7 +6,7 @@ table.table.table-striped
     tr
       th= model_class.human_attribute_name(:id)
       th= model_class.human_attribute_name(:email)
-      th= model_class.human_attribute_name(:encrypted_password)
+      /th= model_class.human_attribute_name(:encrypted_password)
       th= model_class.human_attribute_name(:reset_password_token)
       th= model_class.human_attribute_name(:reset_password_sent_at)
       th= model_class.human_attribute_name(:remember_created_at)
@@ -21,7 +21,7 @@ table.table.table-striped
       tr
         td= link_to user.id, user_path(user)
         td= user.email
-        td= user.encrypted_password
+        /td= user.encrypted_password
         td= user.reset_password_token
         td= user.reset_password_sent_at
         td= user.remember_created_at
