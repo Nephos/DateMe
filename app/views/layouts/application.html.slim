@@ -25,7 +25,14 @@ html lang="en"
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand href="#"DateMe
+          a.navbar-brand href="/"
+            | DateMe
+          / Todo: Improve this
+          - if user_signed_in? 
+            = "User: #{current_user.email} "
+            = link_to "Logout", destroy_user_session_path, method: :delete
+          - else
+            | Anonymous
           .navbar-collapse.collapse.navbar-responsive-collapse
             ul.nav.navbar-nav
               li= link_to "Meetings Maker", make_new_meetings_path

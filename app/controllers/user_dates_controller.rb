@@ -1,5 +1,7 @@
 class UserDatesController < ApplicationController
-  before_action :set_user_date, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource
+
+  #before_action :set_user_date, only: [:show, :edit, :update, :destroy]
 
   # GET /user_dates
   # GET /user_dates.json

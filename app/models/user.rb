@@ -6,4 +6,12 @@ class User < ActiveRecord::Base
 
   has_many :user_dates
   has_many :meeting_dates, through: :user_dates
+
+  def roles
+    self.attributes["roles"].to_s.split(",")
+  end
+
+  def is_admin
+    roles.include? "admin"
+  end
 end

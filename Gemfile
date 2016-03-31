@@ -49,7 +49,11 @@ end
 
 ### Back
 
+# Users
 gem 'devise'
+
+# Permissions
+gem 'cancancan', '~> 1.10'
 
 ### Front
 

@@ -38,6 +38,10 @@ p
   strong= model_class.human_attribute_name(:last_sign_in_ip) + ':'
   br
   = @user.last_sign_in_ip
+p
+  strong= model_class.human_attribute_name(:roles) + ':'
+  br
+  = @user.roles
 
 = link_to t('.back', :default => t("helpers.links.back")), users_path, :class => 'btn btn-default'
 '
