@@ -24,13 +24,14 @@ table.table-condensed.poll
     tr
       th
       - users.each do |user|
-        td
+        td user_id="#{user.id}"
           small= user.name + " (#{user.id})"
   tbody
     - @meeting.meeting_dates.each_with_index do |meeting_date|
-      tr
+      tr meeting_date_id="#{meeting_date.id}"
         th= meeting_date.date
         - dates = meeting_date.user_dates.to_a
         - users.map(&:id).each do |user_id|
-          - present = dates.find{|d| d.user_id == user_id}&.state
-          td class="#{UserDate::STATE[present] || 'bg-danger'}"
+          - user_date = dates.find{|d| d.user_id == user_id}
+          - present = user_date&.state
+          td class="#{UserDate::STATE[present] || 'bg-danger'} user_date" user_date_id="#{user_date&.id}" user_id="#{user_id}"

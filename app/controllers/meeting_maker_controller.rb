@@ -23,10 +23,12 @@ class MeetingMakerController < PrivateController
 
   def add_date
     times = params["date"].map do |dk, dv|
+      next if dv.empty?
       params["time"].map do |tk, tv|
-        {date: Time.parse("#{dv} #{tv}"), meeting_id: params[:meeting_id]} rescue nil
+        next if tv.empty?
+        ({date: Time.parse("#{dv} #{tv}"), meeting_id: params[:meeting_id]} rescue nil)
       end.compact
-    end.flatten
+    end.compact.flatten
     r = MeetingDate.create(times)
     render json: r
   end

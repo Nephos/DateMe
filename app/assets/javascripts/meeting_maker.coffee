@@ -9,17 +9,29 @@ insertNewInputs = (buttonSelector, idsSelector, htmlToInsert) ->
     return
   )
 
+addUserDateLine = (line) ->
+  user_ids = $("thead tr td").map((_, elem) -> return elem.attributes['user_id'].value)
+  date = line['date'].replace("T", " ").replace(".000Z", " UTC") # it sucks TODO: remove and uniformize with Rails dates
+  line = "<tr meeting_date_id='#{line['id']}'><th>#{date}</th>"
+  $.each($("table thead tr:nth-child(1) td"), (idx) ->
+    line += "<td class='bg-danger user_date' user_date_id='' user_id='#{user_ids[idx]}'></td>"
+  )
+  line += "</tr>"
+  $('table.poll tbody').append(line)
+
+updateUserDate = (event) ->
+  console.log(event)
+  event.target.parentNode.attributes['meeting_date_id'].value
+  document.s = event
+
 jQuery ->
   $(document).on("ajax:success", ".meeting-maker-form-remote", (event, data, status, xhr) ->
     data.map((line) ->
-      date = line['date'].replace("T", " ").replace(".000Z", " UTC") # it sucks TODO: remove and uniformize with Rails dates
-      line = "<tr><th>#{date}</th>"
-      $.each($("table thead tr:nth-child(1) td"), (e) ->
-        line += "<td class='bg-danger'></td>"
-      )
-      line += "</tr>"
-      $('table.poll tbody').append(line)
+      addUserDateLine(line)
     )
+  )
+  $(document).on("click", ".user_date", (event) ->
+    updateUserDate(event)
   )
 
   insertNewInputs("#add_date", "label[for='date'] input", "<input type=\"date\" class=\"form-control input-sm\" id=\"\" name=\"date[{{ID}}]\">")
