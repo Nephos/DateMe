@@ -27,7 +27,8 @@ table.table-condensed.poll
         td user_id="#{user.id}"
           small= user.name + " (#{user.id})"
   tbody
-    - @meeting.meeting_dates.each_with_index do |meeting_date|
+    / sort is done by Ruby. It does allow slq optimisation via joins
+    - @meeting.meeting_dates.sort_by(&:date).each_with_index do |meeting_date|
       tr meeting_date_id="#{meeting_date.id}"
         th= meeting_date.date
         - dates = meeting_date.user_dates.to_a
