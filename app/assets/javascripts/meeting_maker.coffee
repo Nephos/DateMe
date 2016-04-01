@@ -2,13 +2,104 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+insertNewInputs = (buttonSelector, idsSelector, htmlToInsert) ->
+  $(document).on("click", buttonSelector, (e) ->
+    id = $(idsSelector).size() + 1
+    $(buttonSelector).before(htmlToInsert.replace("{{ID}}", id))
+    return
+  )
+
+# Inset a new line to the table, with no reference to the database (default value: "no")
+addUserDateLine = (line) ->
+  user_ids = $("thead tr td").map((_, elem) -> return elem.attributes['user_id'].value)
+  date = line['date'].replace("T", " ").replace(".000Z", " UTC") # it sucks TODO: remove and uniformize with Rails dates
+  line = "<tr meeting_date_id='#{line['id']}'><th>#{date}</th>"
+  $.each($("table thead tr:nth-child(1) td"), (idx) -> line += "<td class='bg-danger user_date' user_date_id='' user_id='#{user_ids[idx]}'></td>")
+  line += "</tr>"
+  $('table.poll tbody').append(line)
+
+# Inset a new "user_date"
+insertUserDate = (user_id, meeting_date_id) ->
+  $.ajax(
+    method: "POST",
+    url: "/user_dates.json",
+    data:
+      user_date:
+        user_id: user_id,
+        meeting_date_id: meeting_date_id,
+        state: 'yes'
+  ).done((msg) ->
+    user_date_id = msg["id"]
+    offset = $("thead tr td").map((x, y) ->
+      offset: x
+      user_id: y.attributes.user_id.value
+    ).toArray().find((x) -> return (x.user_id == user_id)).offset + 1
+    cell = $("tr[meeting_date_id='#{meeting_date_id}'] td:nth-of-type(#{offset})");
+    cell.attr("user_date_id", user_date_id)
+    cell.removeClass("bg-danger")
+    cell.addClass("bg-success")
+  )
+
+# Update an "user_date" entry
+updateUserDate = (user_date_id, state) ->
+  $.ajax(
+    method: "PATCH",
+    url: "/user_dates/#{user_date_id}.json",
+    data:
+      id: user_date_id,
+      user_date:
+        state: state
+  ).done((msg) ->
+    $("td[user_date_id='#{user_date_id}']").removeClass("bg-danger")
+    $("td[user_date_id='#{user_date_id}']").removeClass("bg-warning")
+    $("td[user_date_id='#{user_date_id}']").removeClass("bg-success")
+    $("td[user_date_id='#{user_date_id}']").addClass(getHtmlClassFromState(state))
+  )
+
+getStateFromHtml = (elem) ->
+  if elem.hasClass("bg-success")
+    return "yes"
+  else if elem.hasClass("bg-warning")
+    return "maybe"
+  else if elem.hasClass("bg-danger")
+    return "no"
+
+getHtmlClassFromState = (state) ->
+  if state == "yes"
+    return "bg-success"
+  else if state == "maybe"
+    return "bg-warning"
+  else if state == "no"
+    return "bg-danger"
+
+getNextState = (state) ->
+  if state == "yes"
+    return "no"
+  else if state == "no"
+    return "maybe"
+  else if state == "maybe"
+    return "yes"
+
+changeUserDate = (event) ->
+  user_date_id = event.target.attributes.user_date_id.value
+  if user_date_id == ""
+    user_id = event.target.attributes.user_id.value
+    meeting_date_id = event.target.parentNode.attributes.meeting_date_id.value
+    insertUserDate(user_id, meeting_date_id)
+  else
+    state = getStateFromHtml($("td[user_date_id='#{user_date_id}']"))
+    next_state = getNextState(state)
+    updateUserDate(user_date_id, next_state)
+
 jQuery ->
   $(document).on("ajax:success", ".meeting-maker-form-remote", (event, data, status, xhr) ->
-    date = data['date'].replace("T", " ").replace(".000Z", " UTC") # it sucks TODO: remove and uniformize with Rails dates
-    line = "<tr><th>#{date}</th>"
-    $.each($("table thead tr:nth-child(1) td"), (e) ->
-      line += "<td class='bg-danger'></td>"
+    data.map((line) ->
+      addUserDateLine(line)
     )
-    line += "</tr>"
-    $('table.poll tbody').append(line)
   )
+  $(document).on("click", ".user_date", (event) ->
+    changeUserDate(event)
+  )
+
+  insertNewInputs("#add_date", "label[for='date'] input", "<input type=\"date\" class=\"form-control input-sm\" id=\"\" name=\"date[{{ID}}]\">")
+  insertNewInputs("#add_time", "label[for='time'] input", "<input type=\"time\" class=\"form-control input-sm\" id=\"\" name=\"time[{{ID}}]\">")

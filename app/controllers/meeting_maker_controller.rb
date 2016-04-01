@@ -21,6 +21,18 @@ class MeetingMakerController < PrivateController
     #redirect_to root_url, alert: "Not ready yet"
   end
 
+  def add_date
+    times = params["date"].map do |dk, dv|
+      next if dv.empty?
+      params["time"].map do |tk, tv|
+        next if tv.empty?
+        ({date: Time.parse("#{dv} #{tv}"), meeting_id: params[:meeting_id]} rescue nil)
+      end.compact
+    end.compact.flatten
+    r = MeetingDate.create(times)
+    render json: r
+  end
+
   private
   def load_share(id)
     @meeting = Meeting.eager_load(:users, :user_dates, :meeting_dates => :user_dates).find(id)

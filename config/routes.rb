@@ -28,6 +28,7 @@ Rails.application.routes.draw do
       get "make", controller: "meeting_maker", action: "new", as: "make_new"
       post "make", controller: "meeting_maker", action: "create", as: "make"
       get "share/:id", controller: "meeting_maker", action: "show", as: "share"
+      put "share/:id", controller: "meeting_maker", action: "add_date", as: "add_date"
     end
   end
 
