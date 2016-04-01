@@ -11,13 +11,15 @@ insertNewInputs = (buttonSelector, idsSelector, htmlToInsert) ->
 
 jQuery ->
   $(document).on("ajax:success", ".meeting-maker-form-remote", (event, data, status, xhr) ->
-    date = data['date'].replace("T", " ").replace(".000Z", " UTC") # it sucks TODO: remove and uniformize with Rails dates
-    line = "<tr><th>#{date}</th>"
-    $.each($("table thead tr:nth-child(1) td"), (e) ->
-      line += "<td class='bg-danger'></td>"
+    data.map((line) ->
+      date = line['date'].replace("T", " ").replace(".000Z", " UTC") # it sucks TODO: remove and uniformize with Rails dates
+      line = "<tr><th>#{date}</th>"
+      $.each($("table thead tr:nth-child(1) td"), (e) ->
+        line += "<td class='bg-danger'></td>"
+      )
+      line += "</tr>"
+      $('table.poll tbody').append(line)
     )
-    line += "</tr>"
-    $('table.poll tbody').append(line)
   )
 
   insertNewInputs("#add_date", "label[for='date'] input", "<input type=\"date\" class=\"form-control input-sm\" id=\"\" name=\"date[{{ID}}]\">")

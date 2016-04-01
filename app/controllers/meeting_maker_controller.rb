@@ -22,7 +22,13 @@ class MeetingMakerController < PrivateController
   end
 
   def add_date
-    binding.pry
+    times = params["date"].map do |dk, dv|
+      params["time"].map do |tk, tv|
+        {date: Time.parse("#{dv} #{tv}"), meeting_id: params[:meeting_id]} rescue nil
+      end.compact
+    end.flatten
+    r = MeetingDate.create(times)
+    render json: r
   end
 
   private
