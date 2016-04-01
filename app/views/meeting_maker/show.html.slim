@@ -15,14 +15,15 @@ p
   br
   = @meeting.user_name
 
-= form_for @meeting_date, {data: {type: :json}, remote: true, html: { class: "form form-inline meeting_date meeting-maker-form-remote" }} do |f|
-  .form-group
-    = f.label :date, :class => 'control-label col-lg-2'
-      = f.datetime_field :date, :class => 'form-control input-sm'
-    = f.error_span(:date)
-  = f.hidden_field :meeting_id, :class => 'form-control', :value => @meeting.id
-  .form-group
-    = f.submit nil, :class => 'btn btn-primary btn-xs'
+- if current_user.has_meeting? @meeting
+  = form_for @meeting_date, {data: {type: :json}, remote: true, html: { class: "form form-inline meeting_date meeting-maker-form-remote" }} do |f|
+    .form-group
+      = f.label :date, :class => 'control-label col-lg-2'
+        = f.datetime_field :date, :class => 'form-control input-sm'
+      = f.error_span(:date)
+    = f.hidden_field :meeting_id, :class => 'form-control', :value => @meeting.id
+    .form-group
+      = f.submit nil, :class => 'btn btn-primary btn-xs'
 
 - users = @meeting.users.order(:id).uniq.to_a
 table.table-condensed.poll
