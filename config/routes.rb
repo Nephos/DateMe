@@ -28,6 +28,8 @@ Rails.application.routes.draw do
       post "make", controller: "meeting_maker", action: "create", as: "make"
       get "share/:id", controller: "meeting_maker", action: "show", as: "share"
       put "share/:id", controller: "meeting_maker", action: "add_date", as: "add_date"
+      post "subscribe/:id", controller: "meeting_maker", action: "subscribe", as: "subscribe"
+      delete "unsubscribe/:id", controller: "meeting_maker", action: "unsubscribe", as: "unsubscribe"
     end
   end
 
