@@ -16,8 +16,8 @@ class Ability
 
     # Add new data to an existing meeting
     can :new, MeetingDate
-    can :create, MeetingDate, :meeting => {:user_id => user.id}
-    can :create, UserDate, :user_id => user.id
+    can :manage, MeetingDate, :meeting => {:user_id => user.id}
+    can :manage, UserDate, :user_id => user.id
 
     can :manage, :all if user.admin?
 
