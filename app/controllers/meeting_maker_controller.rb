@@ -21,6 +21,10 @@ class MeetingMakerController < PrivateController
     #redirect_to root_url, alert: "Not ready yet"
   end
 
+  def add_date
+    binding.pry
+  end
+
   private
   def load_share(id)
     @meeting = Meeting.eager_load(:users, :user_dates, :meeting_dates => :user_dates).find(id)
