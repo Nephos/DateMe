@@ -2,14 +2,14 @@
 
   = hidden_field_tag :meeting_id, @meeting.id, :class => 'form-control'
   .row
-    .col-md-3
+    div
       = label_tag :date, :class => 'control-label col-lg-2'
         = date_field_tag nil, nil, name: "date[1]", :class => 'form-control input-sm'
         = date_field_tag nil, nil, name: "date[2]", :class => 'form-control input-sm'
         = date_field_tag nil, nil, name: "date[3]", :class => 'form-control input-sm'
         = content_tag :span, "add date", id: "add_date",  :class => 'btn btn-primary btn-xs'
 
-    .col-md-3
+    div
       = label_tag :time, :class => 'control-label col-lg-2'
         = time_field_tag nil, nil, name: "time[1]", :class => 'form-control input-sm'
         = time_field_tag nil, nil, name: "time[2]", :class => 'form-control input-sm'
