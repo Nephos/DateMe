@@ -9,20 +9,87 @@ insertNewInputs = (buttonSelector, idsSelector, htmlToInsert) ->
     return
   )
 
+# Inset a new line to the table, with no reference to the database (default value: "no")
 addUserDateLine = (line) ->
   user_ids = $("thead tr td").map((_, elem) -> return elem.attributes['user_id'].value)
   date = line['date'].replace("T", " ").replace(".000Z", " UTC") # it sucks TODO: remove and uniformize with Rails dates
   line = "<tr meeting_date_id='#{line['id']}'><th>#{date}</th>"
-  $.each($("table thead tr:nth-child(1) td"), (idx) ->
-    line += "<td class='bg-danger user_date' user_date_id='' user_id='#{user_ids[idx]}'></td>"
-  )
+  $.each($("table thead tr:nth-child(1) td"), (idx) -> line += "<td class='bg-danger user_date' user_date_id='' user_id='#{user_ids[idx]}'></td>")
   line += "</tr>"
   $('table.poll tbody').append(line)
 
-updateUserDate = (event) ->
-  console.log(event)
-  event.target.parentNode.attributes['meeting_date_id'].value
-  document.s = event
+# Inset a new "user_date"
+insertUserDate = (user_id, meeting_date_id) ->
+  $.ajax(
+    method: "POST",
+    url: "/user_dates.json",
+    data:
+      user_date:
+        user_id: user_id,
+        meeting_date_id: meeting_date_id,
+        state: 'yes'
+  ).done((msg) ->
+    user_date_id = msg["id"]
+    offset = $("thead tr td").map((x, y) ->
+      offset: x
+      user_id: y.attributes.user_id.value
+    ).toArray().find((x) -> return (x.user_id == user_id)).offset + 1
+    cell = $("tr[meeting_date_id='#{meeting_date_id}'] td:nth-of-type(#{offset})");
+    cell.attr("user_date_id", user_date_id)
+    cell.removeClass("bg-danger")
+    cell.addClass("bg-success")
+  )
+
+# Update an "user_date" entry
+updateUserDate = (user_date_id, state) ->
+  $.ajax(
+    method: "PATCH",
+    url: "/user_dates/#{user_date_id}.json",
+    data:
+      id: user_date_id,
+      user_date:
+        state: state
+  ).done((msg) ->
+    $("td[user_date_id='#{user_date_id}']").removeClass("bg-danger")
+    $("td[user_date_id='#{user_date_id}']").removeClass("bg-warning")
+    $("td[user_date_id='#{user_date_id}']").removeClass("bg-success")
+    $("td[user_date_id='#{user_date_id}']").addClass(getHtmlClassFromState(state))
+  )
+
+getStateFromHtml = (elem) ->
+  if elem.hasClass("bg-success")
+    return "yes"
+  else if elem.hasClass("bg-warning")
+    return "maybe"
+  else if elem.hasClass("bg-danger")
+    return "no"
+
+getHtmlClassFromState = (state) ->
+  if state == "yes"
+    return "bg-success"
+  else if state == "maybe"
+    return "bg-warning"
+  else if state == "no"
+    return "bg-danger"
+
+getNextState = (state) ->
+  if state == "yes"
+    return "no"
+  else if state == "no"
+    return "maybe"
+  else if state == "maybe"
+    return "yes"
+
+changeUserDate = (event) ->
+  user_date_id = event.target.attributes.user_date_id.value
+  if user_date_id == ""
+    user_id = event.target.attributes.user_id.value
+    meeting_date_id = event.target.parentNode.attributes.meeting_date_id.value
+    insertUserDate(user_id, meeting_date_id)
+  else
+    state = getStateFromHtml($("td[user_date_id='#{user_date_id}']"))
+    next_state = getNextState(state)
+    updateUserDate(user_date_id, next_state)
 
 jQuery ->
   $(document).on("ajax:success", ".meeting-maker-form-remote", (event, data, status, xhr) ->
@@ -31,7 +98,7 @@ jQuery ->
     )
   )
   $(document).on("click", ".user_date", (event) ->
-    updateUserDate(event)
+    changeUserDate(event)
   )
 
   insertNewInputs("#add_date", "label[for='date'] input", "<input type=\"date\" class=\"form-control input-sm\" id=\"\" name=\"date[{{ID}}]\">")
