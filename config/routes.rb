@@ -23,14 +23,17 @@ Rails.application.routes.draw do
     resources :meeting_dates
     resources :user_dates
     resources :users
+
+    get "share", controller: "meeting_maker", action: "show", as: "share"
+    put "share", controller: "date_maker", action: "create", as: "add_date"
+    post "subscribe", controller: "meeting_maker", action: "subscribe", as: "subscribe"
+    delete "unsubscribe", controller: "meeting_maker", action: "unsubscribe", as: "unsubscribe"
+
     collection do
       get "make", controller: "meeting_maker", action: "new", as: "make_new"
       post "make", controller: "meeting_maker", action: "create", as: "make"
-      get "share/:id", controller: "meeting_maker", action: "show", as: "share"
-      put "share/:id", controller: "meeting_maker", action: "add_date", as: "add_date"
-      post "subscribe/:id", controller: "meeting_maker", action: "subscribe", as: "subscribe"
-      delete "unsubscribe/:id", controller: "meeting_maker", action: "unsubscribe", as: "unsubscribe"
     end
+
   end
 
 end

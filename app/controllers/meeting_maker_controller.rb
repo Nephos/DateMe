@@ -1,4 +1,5 @@
 class MeetingMakerController < PrivateController
+
   def new
     @meeting = Meeting.new
     #redirect_to root_url, alert: "Not ready yet"
@@ -10,31 +11,19 @@ class MeetingMakerController < PrivateController
     if @meeting.save
       #load_share(@meeting.id)
       #render :show, status: :created, location: share_meetings_path(@meeting)
-      redirect_to share_meetings_path(@meeting)
+      redirect_to meeting_share_path(@meeting)
     else
       render json: @meeting.errors, status: :unprocessable_entity
     end
   end
 
   def show
-    load_share(params[:id])
+    load_share(params[:meeting_id])
     #redirect_to root_url, alert: "Not ready yet"
   end
 
-  def add_date
-    times = params["date"].map do |dk, dv|
-      next if dv.empty?
-      params["time"].map do |tk, tv|
-        next if tv.empty?
-        ({date: Time.parse("#{dv} #{tv}"), meeting_id: params[:meeting_id]} rescue nil)
-      end.compact
-    end.compact.flatten
-    r = MeetingDate.create(times)
-    render json: r
-  end
-
   def subscribe
-    @meeting = Meeting.find(params[:id])
+    @meeting = Meeting.find(params[:meeting_id])
     meeting_date_ids = @meeting.meeting_dates.pluck(:id)
     UserDate.create(meeting_date_ids.map{|meeting_date_id| {user_id: current_user.id, meeting_date_id: meeting_date_id} })
     redirect_to action: :show

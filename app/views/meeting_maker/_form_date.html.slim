@@ -1,4 +1,4 @@
-= form_tag({controller: "meeting_maker", action: "add_date"}, {data: {type: :json}, method: 'PUT', remote: true, class: "form form-horizontal meeting_date meeting-maker-form-remote" }) do
+= form_tag(meeting_add_date_path(@meeting), {data: {type: :json}, method: 'PUT', remote: true, class: "form form-horizontal meeting_date meeting-maker-form-remote" }) do
 
   = hidden_field_tag :meeting_id, @meeting.id, :class => 'form-control'
   .row

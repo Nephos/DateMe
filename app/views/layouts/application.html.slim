@@ -17,7 +17,6 @@ html lang="en"
     /[if lt IE 9]
       = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.2/html5shiv.min.js"
 
-
   body
     .navbar.navbar-default.navbar-static-top
         .container
@@ -35,10 +34,10 @@ html lang="en"
             ul.nav.navbar-nav
               - if user_signed_in?
                 li= link_to "Meetings Maker", make_new_meetings_path
-                li= link_to "Meetings", meetings_path
-                li= link_to "Meeting Dates", meeting_dates_path
-                li= link_to "User Dates", user_dates_path
                 - if current_user.admin?
+                  li= link_to "Meetings", meetings_path
+                  li= link_to "Meeting Dates", meeting_dates_path
+                  li= link_to "User Dates", user_dates_path
                   li= link_to "Users", users_path
                 li= link_to "Logout", destroy_user_session_path, method: :delete
               - else
