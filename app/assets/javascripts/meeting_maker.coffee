@@ -22,7 +22,7 @@ addUserDateLine = (line) ->
 insertUserDate = (user_id, meeting_date_id) ->
   $.ajax(
     method: "POST",
-    url: "/user_dates.json",
+    url: "/votes",
     data:
       user_date:
         user_id: user_id,
@@ -44,9 +44,8 @@ insertUserDate = (user_id, meeting_date_id) ->
 updateUserDate = (user_date_id, state) ->
   $.ajax(
     method: "PATCH",
-    url: "/user_dates/#{user_date_id}.json",
+    url: "/votes/#{user_date_id}",
     data:
-      id: user_date_id,
       user_date:
         state: state
   ).done((msg) ->

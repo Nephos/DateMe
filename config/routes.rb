@@ -38,4 +38,10 @@ Rails.application.routes.draw do
 
   end
 
+  scope "votes" do
+    post "", controller: "vote_maker", action: "create"
+    get ":user_date_id", controller: "vote_maker", action: "show", as: "get"
+    patch ":user_date_id", controller: "vote_maker", action: "update", as: "set"
+  end
+
 end
