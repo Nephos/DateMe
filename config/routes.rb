@@ -25,9 +25,11 @@ Rails.application.routes.draw do
     resources :users
 
     get "share", controller: "meeting_maker", action: "show", as: "share"
+    # TODO: maybe using PUT is not very standard. Using a POST seems to be a more cool stuff
     put "share", controller: "date_maker", action: "create", as: "add_date"
-    post "subscribe", controller: "meeting_maker", action: "subscribe", as: "subscribe"
-    delete "unsubscribe", controller: "meeting_maker", action: "unsubscribe", as: "unsubscribe"
+
+    post "subscribe", controller: "subscription_maker", action: "create", as: "subscribe"
+    delete "unsubscribe", controller: "subscription_maker", action: "destroy", as: "unsubscribe"
 
     collection do
       get "make", controller: "meeting_maker", action: "new", as: "make_new"

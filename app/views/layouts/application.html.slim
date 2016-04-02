@@ -27,7 +27,7 @@ html lang="en"
           a.navbar-brand href="/"
             | DateMe Poll
           - if user_signed_in? 
-            small = current_user.email + " "
+            small = "#{current_user.email} (#{current_user.id}) "
           - else
             small Anonymous 
           .navbar-collapse.collapse.navbar-responsive-collapse
