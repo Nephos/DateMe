@@ -8,8 +8,21 @@ class DateMakerController < PrivateController
         ({date: Time.parse("#{dv} #{tv}"), meeting_id: params[:meeting_id]} rescue nil)
       end.compact
     end.compact.flatten
-    r = MeetingDate.create(times)
-    render json: r
+
+    # TODO: maybe is there a better way to handle this error
+    # TODO: Better handlement
+    # 1. make it in a transaction
+    # 2. make it and catch every errors and returns them at the end
+    errors = []
+    r = times.map{|date|
+      begin
+        MeetingDate.create(date)
+      rescue => e
+        errors << "Cannot register this. Because of #{e.cause.message}"
+        nil
+      end
+    }.compact
+    render json: {errors: errors, data: r}
   end
 
   def destroy

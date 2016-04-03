@@ -101,7 +101,15 @@ removeLineOnClick = (buttonSelector) ->
 
 jQuery ->
   $(document).on("ajax:success", ".meeting-maker-form-remote", (event, data, status, xhr) ->
-    data.map((line) -> addUserDateLine(line))
+    data["data"].map((line) -> addUserDateLine(line))
+    $(".meeting-maker-form-remote input.form-control").map((idx, e) -> e.value = null)
+    $(".page-header").before(
+      "<div class=\"alert fade in alert-success \"><button data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>Inserted #{data['data'].length} new dates.</div>"
+    )
+    if data["errors"].length > 0
+      $(".page-header").before(
+        "<div class=\"alert fade in alert-danger \"><button data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>Error during insert.<br />#{data['errors'].join('<br />')}</div>"
+      )
   )
   $(document).on("click", ".user_date", (event) -> changeUserDate(event))
 
