@@ -93,11 +93,19 @@ changeUserDate = (event) ->
     next_state = getNextState(state)
     updateUserDate(user_date_id, next_state)
 
+removeLineOnClick = (buttonSelector) ->
+  # TODO: maybe should happend on ajax:success only ...
+  $(document).on("click", buttonSelector, (event) ->
+    event.target.parentNode.parentNode.remove()
+  )
+
 jQuery ->
   $(document).on("ajax:success", ".meeting-maker-form-remote", (event, data, status, xhr) ->
     data.map((line) -> addUserDateLine(line))
   )
   $(document).on("click", ".user_date", (event) -> changeUserDate(event))
 
+  # this is not displayed if the current user is not the owner anyway
   insertNewInputs("#add_date", "label[for='date'] input", "<input type=\"date\" class=\"form-control input-sm\" id=\"\" name=\"date[{{ID}}]\">")
   insertNewInputs("#add_time", "label[for='time'] input", "<input type=\"time\" class=\"form-control input-sm\" id=\"\" name=\"time[{{ID}}]\">")
+  removeLineOnClick("table.poll th .btn-danger")
