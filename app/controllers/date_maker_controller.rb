@@ -12,4 +12,11 @@ class DateMakerController < PrivateController
     render json: r
   end
 
+  def destroy
+    @meeting_date = MeetingDate.joins(:meeting).where(meetings: {user_id: current_user.id}).find(params[:meeting_id])
+    @meeting_date.destroy
+    head :no_content
+  end
+
+
 end

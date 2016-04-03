@@ -10,10 +10,13 @@ insertNewInputs = (buttonSelector, idsSelector, htmlToInsert) ->
   )
 
 # Inset a new line to the table, with no reference to the database (default value: "no")
-addUserDateLine = (line) ->
+addUserDateLine = (row) ->
   user_ids = $("thead tr td").map((_, elem) -> return elem.attributes['user_id'].value)
-  date = line['date'].replace("T", " ").replace(".000Z", " UTC") # it sucks TODO: remove and uniformize with Rails dates
-  line = "<tr meeting_date_id='#{line['id']}'><th>#{date}</th>"
+  date = row['date'].replace("T", " ").replace(".000Z", " UTC") # it sucks TODO: remove and uniformize with Rails dates
+  line = "<tr meeting_date_id='#{row['id']}'>"
+  line +="<th>"
+  line += "<a href=\"/meetings/#{row['id']}/share\" data-method=\"delete\" rel=\"nofollow\" class=\"btn btn-xs btn-danger\">x</a>"
+  line += " #{date}</th>"
   $.each($("table thead tr:nth-child(1) td"), (idx) -> line += "<td class='bg-danger user_date' user_date_id='' user_id='#{user_ids[idx]}'></td>")
   line += "</tr>"
   $('table.poll tbody').append(line)

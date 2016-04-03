@@ -34,7 +34,11 @@ table.table-condensed.poll
     / sort is done by Ruby. It does allow slq optimisation via joins
     - @meeting.meeting_dates.sort_by(&:date).each_with_index do |meeting_date|
       tr meeting_date_id="#{meeting_date.id}"
-        th= meeting_date.date
+        th
+          - if current_user.has_meeting? @meeting
+            = link_to 'x', meeting_rm_date_path(meeting_date), :method => :delete, :class => 'btn btn-xs btn-danger'
+            |  
+          = meeting_date.date
         - dates = meeting_date.user_dates.to_a
         - users.map(&:id).each do |user_id|
           - user_date = dates.find{|d| d.user_id == user_id}

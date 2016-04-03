@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     get "share", controller: "meeting_maker", action: "show", as: "share"
     # TODO: maybe using PUT is not very standard. Using a POST seems to be a more cool stuff
     put "share", controller: "date_maker", action: "create", as: "add_date"
+    delete "share", controller: "date_maker", action: "destroy", as: "rm_date"
 
     post "subscribe", controller: "subscription_maker", action: "create", as: "subscribe"
     delete "unsubscribe", controller: "subscription_maker", action: "destroy", as: "unsubscribe"
