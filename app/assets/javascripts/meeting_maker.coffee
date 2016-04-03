@@ -55,7 +55,7 @@ updateUserDate = (user_date_id, state) ->
     $("table.poll td[user_date_id='#{user_date_id}']").removeClass("bg-danger")
     $("table.poll td[user_date_id='#{user_date_id}']").removeClass("bg-warning")
     $("table.poll td[user_date_id='#{user_date_id}']").removeClass("bg-success")
-    $("table.poll td[user_date_id='#{user_date_id}']").addClass(getHtmlClassFromState(state))
+    $("table.poll td[user_date_id='#{user_date_id}']").addClass(getHtmlClassFromState(msg['state']))
   )
 
 getStateFromHtml = (elem) ->
@@ -76,11 +76,11 @@ getHtmlClassFromState = (state) ->
 
 getNextState = (state) ->
   if state == "yes"
-    return "no"
-  else if state == "no"
     return "maybe"
-  else if state == "maybe"
+  else if state == "no"
     return "yes"
+  else if state == "maybe"
+    return "no"
 
 changeUserDate = (event) ->
   user_date_id = event.target.attributes.user_date_id.value
