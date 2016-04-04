@@ -12,7 +12,6 @@ insertNewInputs = (buttonSelector, idsSelector, htmlToInsert) ->
 # Inset a new line to the table, with no reference to the database (default value: "no")
 addUserDateLine = (row) ->
   user_ids = $("table.poll thead tr td").map((_, elem) -> return elem.attributes['user_id'].value)
-  #date = row['date'].replace("T", " ").replace(".000Z", " UTC") # it sucks TODO: remove and uniformize with Rails dates
   line = "<tr meeting_date_id='#{row['id']}'>"
   line +="<th>"
   line += "<a href=\"/meetings/#{row['id']}/share\" data-method=\"delete\" rel=\"nofollow\" class=\"btn btn-xs btn-danger\">x</a>"
