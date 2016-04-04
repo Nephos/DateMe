@@ -4,7 +4,7 @@ html lang="en"
     meta charset="utf-8"
     meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"
     meta name="viewport" content="width=device-width, initial-scale=1.0"
-    title= content_for?(:title) ? yield(:title) : "DateMe"
+    title= content_for?(:title) ? yield(:title) : "MeetUs"
     = csrf_meta_tags
     = stylesheet_link_tag "application", :media => "all"
     = favicon_link_tag 'apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144'
@@ -25,7 +25,7 @@ html lang="en"
             span.icon-bar
             span.icon-bar
           a.navbar-brand href="/"
-            | DateMe Poll
+            | MeetUs
           - if user_signed_in? 
             small = "#{current_user.email} (#{current_user.id}) "
           - else

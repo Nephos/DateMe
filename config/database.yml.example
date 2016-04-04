@@ -2,21 +2,21 @@ development:
   adapter: postgresql
   host: localhost
   username: root
-  database: dateme_dev
+  database: meetus_dev
   password: toor
 
 test:
   adapter: postgresql
   host: localhost
   username: root
-  database: dateme_test
+  database: meetus_test
   password: toor
 
 production:
   adapter: postgresql
   host: localhost
   username: root
-  database: dateme_prod
+  database: meetus_prod
   password: toor
 
 # # SQLite version 3.x
