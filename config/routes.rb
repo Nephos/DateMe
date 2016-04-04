@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     delete "unsubscribe", controller: "subscription_maker", action: "destroy", as: "unsubscribe"
 
     collection do
+      get "shared", controller: "meeting_maker", action: "index", as: "shared"
       get "make", controller: "meeting_maker", action: "new", as: "make_new"
       post "make", controller: "meeting_maker", action: "create", as: "make"
     end

@@ -1,5 +1,9 @@
 class MeetingMakerController < PrivateController
 
+  def index
+    @meetings = Meeting.where(user: current_user).order(updated_at: 'desc').paginate(:page => params[:page])
+  end
+
   def new
     @meeting = Meeting.new
     #redirect_to root_url, alert: "Not ready yet"

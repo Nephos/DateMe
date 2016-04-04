@@ -34,6 +34,7 @@ html lang="en"
             ul.nav.navbar-nav
               - if user_signed_in?
                 li= link_to "Meetings Maker", make_new_meetings_path
+                li= link_to "My Meetings", shared_meetings_path
                 - if current_user.admin?
                   li= link_to "Meetings", meetings_path
                   li= link_to "Meeting Dates", meeting_dates_path
