@@ -7,9 +7,10 @@ class SubscriptionMakerController < PrivateController
     return redirect_to(meeting_share_path(@meeting), alert: "You cannot subscribe to an empty poll") if meeting_date_ids.size.zero?
     data = meeting_date_ids.map{|meeting_date_id| {user_id: current_user.id, meeting_date_id: meeting_date_id} }
     # The following code comes from the 90' !!
-    t = Time.now.strftime("%Y-%m-%d %H:%M:%S")
-    sql_query_mass_insert = "INSERT INTO user_dates (\"user_id\", \"meeting_date_id\", \"updated_at\", \"created_at\") VALUES "
-    sql_query_mass_insert += data.map {|row| "(#{row[:user_id]}, #{row[:meeting_date_id]}, '#{t}', '#{t}')" }.join(", ")
+    current_time = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+    default_state = nil
+    sql_query_mass_insert = "INSERT INTO user_dates (\"user_id\", \"meeting_date_id\", \"updated_at\", \"created_at\", \"state\") VALUES "
+    sql_query_mass_insert += data.map {|row| "(#{row[:user_id]}, #{row[:meeting_date_id]}, '#{current_time}', '#{current_time}', '#{default_state}')" }.join(", ")
     n = ActiveRecord::Base.transaction { UserDate.connection.execute sql_query_mass_insert }.cmd_tuples
     redirect_to({action: :show, controller: :meeting_maker}, {notice: "Added to the poll, and #{n} vote#{n>1??s:nil} prepared for you"})
   end

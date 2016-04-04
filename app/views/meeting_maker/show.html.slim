@@ -43,4 +43,4 @@ table.table-condensed.poll
         - users.map(&:id).each do |user_id|
           - user_date = dates.find{|d| d.user_id == user_id}
           - present = user_date&.state
-          td class="#{UserDate::STATE[present] || 'bg-danger'} user_date" user_date_id="#{user_date&.id}" user_id="#{user_id}"
+          td class="#{UserDate::STATE[present] || 'bg-info'} user_date" user_date_id="#{user_date&.id}" user_id="#{user_id}"

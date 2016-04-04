@@ -16,7 +16,7 @@ addUserDateLine = (row) ->
   line +="<th>"
   line += "<a href=\"/meetings/#{row['id']}/share\" data-method=\"delete\" rel=\"nofollow\" class=\"btn btn-xs btn-danger\">x</a>"
   line += " #{row['date_formated']}</th>"
-  $.each($("table thead tr:nth-child(1) td"), (idx) -> line += "<td class='bg-danger user_date' user_date_id='' user_id='#{user_ids[idx]}'></td>")
+  $.each($("table thead tr:nth-child(1) td"), (idx) -> line += "<td class='bg-info user_date' user_date_id='' user_id='#{user_ids[idx]}'></td>")
   line += "</tr>"
   $('table.poll tbody').append(line)
 
@@ -38,8 +38,8 @@ insertUserDate = (user_id, meeting_date_id) ->
     ).toArray().find((x) -> return (x.user_id == user_id)).offset + 1
     cell = $("tr[meeting_date_id='#{meeting_date_id}'] td:nth-of-type(#{offset})");
     cell.attr("user_date_id", user_date_id)
-    cell.removeClass("bg-danger")
-    cell.addClass("bg-success")
+    cell.removeClass("bg-info")
+    cell.addClass(getHtmlClassFromState(msg['state']))
   )
 
 # Update an "user_date" entry
@@ -51,10 +51,12 @@ updateUserDate = (user_date_id, state) ->
       user_date:
         state: state
   ).done((msg) ->
-    $("table.poll td[user_date_id='#{user_date_id}']").removeClass("bg-danger")
-    $("table.poll td[user_date_id='#{user_date_id}']").removeClass("bg-warning")
-    $("table.poll td[user_date_id='#{user_date_id}']").removeClass("bg-success")
-    $("table.poll td[user_date_id='#{user_date_id}']").addClass(getHtmlClassFromState(msg['state']))
+    cell = $("table.poll td[user_date_id='#{user_date_id}']")
+    cell.removeClass("bg-danger")
+    cell.removeClass("bg-warning")
+    cell.removeClass("bg-success")
+    cell.removeClass("bg-info")
+    cell.addClass(getHtmlClassFromState(msg['state']))
   )
 
 getStateFromHtml = (elem) ->
