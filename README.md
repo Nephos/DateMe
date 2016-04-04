@@ -6,7 +6,7 @@ The project allows you to manage your meetings by sharing polls.
 
 ## Install
 
-Install ruby 2, and ruby gems:
+Install ruby 2, and ruby gems. Then be sure you have postgresql stuff.
 
 ```sh
 gem install bundler

@@ -10,15 +10,15 @@ insertNewInputs = (buttonSelector, idsSelector, htmlToInsert) ->
   )
 
 # Inset a new line to the table, with no reference to the database (default value: "no")
-addUserDateLine = (row) ->
+getUserDateLine = (row) ->
   user_ids = $("table.poll thead tr td").map((_, elem) -> return elem.attributes['user_id'].value)
   line = "<tr meeting_date_id='#{row['id']}'>"
   line +="<th>"
   line += "<a href=\"/meetings/#{row['id']}/share\" data-method=\"delete\" rel=\"nofollow\" class=\"btn btn-xs btn-danger\">x</a>"
   line += " #{row['date_formated']}</th>"
-  $.each($("table thead tr:nth-child(1) td"), (idx) -> line += "<td class='bg-info user_date' user_date_id='' user_id='#{user_ids[idx]}'></td>")
+  line += $.map($("table thead tr:nth-child(1) td"), (idx) -> "<td class='bg-info user_date' user_date_id='' user_id='#{user_ids[idx]}'></td>").join('')
   line += "</tr>"
-  $('table.poll tbody').append(line)
+  return line
 
 # Inset a new "user_date"
 insertUserDate = (user_id, meeting_date_id) ->
@@ -102,7 +102,14 @@ removeLineOnClick = (buttonSelector) ->
 
 jQuery ->
   $(document).on("ajax:success", ".meeting-maker-form-remote", (event, data, status, xhr) ->
-    data["data"].map((line) -> addUserDateLine(line))
+    # Add the lines
+    lines = $("table tbody tr").toArray() # fetch all existing rows
+    lines = lines.concat(data["data"].map((line) -> $(getUserDateLine(line))[0])) #  add the new generated lines
+    # Sort the lines
+    sorted_lines = lines.sort((a, b) -> return new Date(a.textContent.trim().replace("x ", "")) - new Date(b.textContent.trim().replace("x ", "")))
+    # save the sorted rows in the html instead of the old rows
+    $('table.poll tbody').html(sorted_lines.map((elem) -> return elem.outerHTML).join(""))
+    # Handle errors
     $(".meeting-maker-form-remote input.form-control").map((idx, e) -> e.value = null)
     $(".page-header").before(
       "<div class=\"alert fade in alert-success \"><button data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>Inserted #{data['data'].length} new dates.</div>"

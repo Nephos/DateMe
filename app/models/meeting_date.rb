@@ -3,7 +3,7 @@ class MeetingDate < ActiveRecord::Base
   has_many :user_dates, :dependent => :delete_all # no dependencies
 
   def date_formated
-    self.date.strftime("%d %b %Y, %Hh%M")
+    self.date.strftime("%d %b %Y, %H:%M")
   end
 
   def attributes
