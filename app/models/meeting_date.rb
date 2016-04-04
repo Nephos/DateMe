@@ -7,7 +7,11 @@ class MeetingDate < ActiveRecord::Base
   end
 
   def attributes
-    super.merge("date_formated" => self.date_formated)
+    if super["date"]
+      super.merge("date_formated" => self.date_formated)
+    else
+      super
+    end
   end
 
 end
