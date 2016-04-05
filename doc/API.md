@@ -10,7 +10,7 @@
 - optional parameters: ``meeting[end_at]`` (parsable date) ``meeting[description]``
 
 ### Display informations about a meeting
-- route: ``GET /meetings/:id/share.json``
+- route: ``GET /meetings/:meeting_uuid/share.json``
 - required parameters: none
 - optional parameters: none
 
@@ -20,12 +20,12 @@
 - optional parameters: none
 
 ### Add a new date to one of your meetings
-- route: ``PUT /meetings/:id/share.json``
+- route: ``PUT /meetings/:meeting_uuid/share.json``
 - required parameters: ``meeting_id``
 - optional parameters:  ``date[n]`` ``time[n]``
 
 ### Remove a existing date to one of your meetings
-- route: ``DELETE /meetings/:id/share.json``
+- route: ``DELETE /meetings/:meeting_uuid/share.json``
 - required parameters: ``meeting_id``
 - optional parameters:  none
 
