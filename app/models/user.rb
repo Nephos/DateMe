@@ -8,11 +8,6 @@ class User < ActiveRecord::Base
   has_many :meeting_dates, through: :user_dates
   has_many :meetings, through: :meeting_dates
 
-  before_create :define_uuid
-  def define_uuid
-    self.uuid = UUID.new.generate
-  end
-
   def roles
     self.attributes["roles"].to_s.split(",")
   end

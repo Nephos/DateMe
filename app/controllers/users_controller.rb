@@ -1,7 +1,7 @@
 class UsersController < PrivateController
   load_and_authorize_resource
 
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  #before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
   # GET /users.json
@@ -66,8 +66,7 @@ class UsersController < PrivateController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = params[:uuid] ? User.find_by("uuid LIKE '%' || ? || '%'", params[:uuid]) : User.find_by(id: params[:id] || params[:user_id])
-      raise ActiveRecord::RecordNotFound if @user.nil?
+      @user = User.find(params[:id] || params[:user_id])
       #@user ||= UserDate.find(params[:user_date_id]).user if params[:user_date_id]
     end
 

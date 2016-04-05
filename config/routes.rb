@@ -6,9 +6,6 @@ Rails.application.routes.draw do
     resources :user_dates
     resources :meeting_dates
     resources :meetings
-    collection do
-      get "uuid/:uuid", controller: "users", action: "show", as: "show_by_uuid"
-    end
   end
 
   resources :user_dates do

@@ -27,8 +27,7 @@ html lang="en"
           a.navbar-brand href="/"
             | MeetUs
           small.navbar-brand.user-email
-            / Make a link "uuid" that toggle (show/hide) the uuid
-            = user_signed_in? ? "#{current_user.email} (#{current_user.uuid}) " : "Anonymous "
+            = user_signed_in? ? "#{current_user.email} (#{current_user.id}) " : "Anonymous "
           .navbar-collapse.collapse.navbar-responsive-collapse
             ul.nav.navbar-nav
               - if user_signed_in?
