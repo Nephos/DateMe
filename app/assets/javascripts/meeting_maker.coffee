@@ -9,16 +9,25 @@ insertNewInputs = (buttonSelector, idsSelector, htmlToInsert) ->
     return
   )
 
+constructDateLine = (data, cells) ->
+  line = "<tr meeting_date_id='#{data['id']}'>"
+  line +="<th>"
+  line += "<a href=\"/meetings/#{data['id']}/share\" data-method=\"delete\" rel=\"nofollow\" class=\"btn btn-xs btn-danger\">x</a>"
+  line += " #{data['date_formated']}</th>"
+  line += cells.join('')
+  line += "</tr>"
+  return line
+
 # Inset a new line to the table, with no reference to the database (default value: "no")
 getUserDateLine = (row) ->
   user_ids = $("table.poll thead tr td").map((_, elem) -> return elem.attributes['user_id'].value)
-  line = "<tr meeting_date_id='#{row['id']}'>"
-  line +="<th>"
-  line += "<a href=\"/meetings/#{row['id']}/share\" data-method=\"delete\" rel=\"nofollow\" class=\"btn btn-xs btn-danger\">x</a>"
-  line += " #{row['date_formated']}</th>"
-  line += $.map($("table thead tr:nth-child(1) td"), (idx) -> "<td class='bg-info user_date' user_date_id='' user_id='#{user_ids[idx]}'></td>").join('')
-  line += "</tr>"
-  return line
+  cells = $.map($("table thead tr:nth-child(1) td"), (idx) -> "<td class='bg-info user_date' user_date_id='' user_id='#{user_ids[idx]}'></td>")
+  return constructDateLine(row, cells)
+
+setCellState = (cell, state) ->
+  cell.removeClass("bg-danger bg-warning bg-success bg-info")
+  cell.addClass(getHtmlClassFromState(state))
+  return cell
 
 # Inset a new "user_date"
 insertUserDate = (user_id, meeting_date_id) ->
@@ -38,8 +47,7 @@ insertUserDate = (user_id, meeting_date_id) ->
     ).toArray().find((x) -> return (x.user_id == user_id)).offset + 1
     cell = $("tr[meeting_date_id='#{meeting_date_id}'] td:nth-of-type(#{offset})");
     cell.attr("user_date_id", user_date_id)
-    cell.removeClass("bg-info")
-    cell.addClass(getHtmlClassFromState(msg['state']))
+    setCellState(cell, msg['state'])
   )
 
 # Update an "user_date" entry
@@ -52,11 +60,7 @@ updateUserDate = (user_date_id, state) ->
         state: state
   ).done((msg) ->
     cell = $("table.poll td[user_date_id='#{user_date_id}']")
-    cell.removeClass("bg-danger")
-    cell.removeClass("bg-warning")
-    cell.removeClass("bg-success")
-    cell.removeClass("bg-info")
-    cell.addClass(getHtmlClassFromState(msg['state']))
+    setCellState(cell, msg['state'])
   )
 
 getStateFromHtml = (elem) ->
@@ -66,6 +70,8 @@ getStateFromHtml = (elem) ->
     return "maybe"
   else if elem.hasClass("bg-danger")
     return "no"
+  #return "yes"
+
 
 getHtmlClassFromState = (state) ->
   if state == "yes"
@@ -74,6 +80,7 @@ getHtmlClassFromState = (state) ->
     return "bg-warning"
   else if state == "no"
     return "bg-danger"
+  #return "bg-primary"
 
 getNextState = (state) ->
   if state == "yes"
@@ -82,6 +89,7 @@ getNextState = (state) ->
     return "yes"
   else if state == "maybe"
     return "no"
+  #return "yes"
 
 changeUserDate = (event) ->
   user_date_id = event.target.attributes.user_date_id.value
