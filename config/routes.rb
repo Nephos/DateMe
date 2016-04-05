@@ -31,7 +31,7 @@ Rails.application.routes.draw do
     end
   end
 
-  scope "meetings/:uuid" do
+  scope "meetings/:meeting_uuid" do
     get "share", controller: "meeting_maker", action: "show", as: "meeting_share"
     # TODO: maybe using PUT is not very standard. Using a POST seems to be a more cool stuff
     put "share", controller: "date_maker", action: "create", as: "meeting_add_date"

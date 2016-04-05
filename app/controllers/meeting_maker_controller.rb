@@ -22,7 +22,7 @@ class MeetingMakerController < PrivateController
   end
 
   def show
-    load_share(params[:uuid])
+    load_share(params[:meeting_uuid])
     #redirect_to root_url, alert: "Not ready yet"
   end
 
