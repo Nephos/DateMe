@@ -5,3 +5,8 @@
  *= require_self
  *= require_tree .
 */
+
+small.user-email {
+  font-size: small !important;
+  float: right;
+}
