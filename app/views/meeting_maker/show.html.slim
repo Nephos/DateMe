@@ -14,13 +14,17 @@ p
   strong= Meeting.human_attribute_name(:user_id) + ':'
   br
   = @meeting.user_name
+p
+  strong= Meeting.human_attribute_name(:uuid) + ':'
+  br
+  = @meeting.uuid
 
 - if current_user.has_meeting? @meeting
   = render partial: "form_date"
 - if @meeting.users.include? current_user
-  = link_to "Unsubscribe", meeting_unsubscribe_path(@meeting), method: "DELETE", class: "btn btn-danger"
+  = link_to "Unsubscribe", meeting_unsubscribe_path(@meeting.uuid), method: "DELETE", class: "btn btn-danger"
 - else
-  = link_to "Subscribe", meeting_subscribe_path(@meeting), method: "POST", class: "btn btn-success"
+  = link_to "Subscribe", meeting_subscribe_path(@meeting.uuid), method: "POST", class: "btn btn-success"
 
 - users = @meeting.users.order(:id).uniq.to_a
 table.table-condensed.poll

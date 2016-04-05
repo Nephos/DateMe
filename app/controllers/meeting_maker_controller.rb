@@ -15,20 +15,21 @@ class MeetingMakerController < PrivateController
     if @meeting.save
       #load_share(@meeting.id)
       #render :show, status: :created, location: share_meetings_path(@meeting)
-      redirect_to meeting_share_path(@meeting)
+      redirect_to meeting_share_path(@meeting.uuid)
     else
       render json: @meeting.errors, status: :unprocessable_entity
     end
   end
 
   def show
-    load_share(params[:meeting_id])
+    load_share(params[:meeting_uuid])
     #redirect_to root_url, alert: "Not ready yet"
   end
 
   private
-  def load_share(id)
-    @meeting = Meeting.eager_load(:users, :user_dates, :meeting_dates => :user_dates).find(id)
+  def load_share(uuid)
+    @meeting = Meeting.eager_load(:users, :user_dates, :meeting_dates => :user_dates).find_by(uuid: uuid)
+    raise ActiveRecord::RecordNotFound if @meeting.nil?
     @meeting_date = MeetingDate.new
   end
 

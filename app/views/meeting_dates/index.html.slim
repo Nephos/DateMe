@@ -6,7 +6,7 @@ table.table.table-striped
     tr
       th= model_class.human_attribute_name(:id)
       th= model_class.human_attribute_name(:date)
-      th= model_class.human_attribute_name(:meeting_id)
+      th= model_class.human_attribute_name(:meeting_uuid)
       th= model_class.human_attribute_name(:note)
       th= model_class.human_attribute_name(:created_at)
       th=t '.actions', :default => t("helpers.actions")
@@ -15,7 +15,7 @@ table.table.table-striped
       tr
         td= link_to meeting_date.id, meeting_date_path(meeting_date)
         td= meeting_date.date
-        td= meeting_date.meeting_id
+        td= meeting_date.meeting_uuid
         td= meeting_date.note
         td= meeting_date.created_at&.strftime("%Y-%m-%d")
         td

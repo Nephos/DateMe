@@ -71,7 +71,6 @@ getStateFromHtml = (elem) ->
     return "no"
   #return "yes"
 
-
 getHtmlClassFromState = (state) ->
   if state == "yes"
     return "bg-success"
@@ -88,7 +87,7 @@ getNextState = (state) ->
     return "yes"
   else if state == "maybe"
     return "no"
-  #return "yes"
+  return "yes"
 
 changeUserDate = (event) ->
   user_date_id = event.target.attributes.user_date_id.value

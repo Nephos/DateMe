@@ -57,6 +57,9 @@ gem 'devise'
 # Permissions
 gem 'cancancan', '~> 1.10'
 
+# uniq string id
+gem 'uuid'
+
 ### Front
 
 # Template
