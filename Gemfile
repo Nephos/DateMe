@@ -57,6 +57,9 @@ gem 'devise'
 # Permissions
 gem 'cancancan', '~> 1.10'
 
+# random id generator
+gem 'uuid'
+
 ### Front
 
 # Template

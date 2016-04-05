@@ -1,6 +1,15 @@
 - model_class = User
 .page-header
   h1=t '.title', :default => model_class.model_name.human.pluralize.titleize
+
+= form_tag("/users/uuid/unknown",  {data: {type: :json}, method: 'GET', class: "form form-inline user-uuid-find" }) do
+  .form-group
+    = label_tag :uuid, :class => 'control-label col-lg-2'
+      = text_field_tag nil, nil, name: "uuid", :class => 'form-control input-sm'
+  .form-group
+    = label_tag :submit, :class => 'control-label col-lg-2'
+      = submit_tag "Find by UUID", :class => 'btn btn-primary btn-sm'
+
 table.table.table-striped
   thead
     tr
@@ -16,6 +25,7 @@ table.table.table-striped
       th= model_class.human_attribute_name(:last_sign_in_ip)
       th= model_class.human_attribute_name(:roles)
       th= model_class.human_attribute_name(:created_at)
+      th= model_class.human_attribute_name(:uuid)
       th=t '.actions', :default => t("helpers.actions")
   tbody
     - @users.each do |user|
@@ -32,6 +42,7 @@ table.table.table-striped
         td= user.last_sign_in_ip
         td= user.roles.join(", ")
         td= user.created_at.strftime("%Y-%m-%d")
+        td= user.uuid
         td
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_user_path(user), :class => 'btn btn-default btn-xs'
           '

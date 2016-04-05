@@ -3,6 +3,11 @@
   h1=t '.title', :default => model_class.model_name.human.titleize
 
 p
+  strong= model_class.human_attribute_name(:uuid) + ':'
+  br
+  = @user.uuid
+
+p
   strong= model_class.human_attribute_name(:email) + ':'
   br
   = @user.email
