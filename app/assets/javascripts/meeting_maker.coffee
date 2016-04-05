@@ -20,8 +20,7 @@ constructDateLine = (data, cells) ->
 
 # Inset a new line to the table, with no reference to the database (default value: "no")
 getUserDateLine = (row) ->
-  user_ids = $("table.poll thead tr td").map((_, elem) -> return elem.attributes['user_id'].value)
-  cells = $.map($("table thead tr:nth-child(1) td"), (idx) -> "<td class='bg-info user_date' user_date_id='' user_id='#{user_ids[idx]}'></td>")
+  cells = $.map($("table thead tr:nth-child(1) td"), (idx) -> "<td class='bg-info user_date' user_date_id='' user_id='#{idx.attributes.user_id.value}'></td>")
   return constructDateLine(row, cells)
 
 setCellState = (cell, state) ->
