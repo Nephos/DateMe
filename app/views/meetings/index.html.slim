@@ -6,7 +6,7 @@ table.table.table-striped
     tr
       th= model_class.human_attribute_name(:id)
       th= model_class.human_attribute_name(:name)
-      th= model_class.human_attribute_name(:description)
+      th= model_class.human_attribute_name(:uuid)
       th= model_class.human_attribute_name(:end_at)
       th= model_class.human_attribute_name(:user_id)
       th= model_class.human_attribute_name(:created_at)
@@ -15,13 +15,13 @@ table.table.table-striped
     - @meetings.each do |meeting|
       tr
         td= link_to meeting.id, meeting_path(meeting)
-        td= meeting.name
-        td= meeting.description
+        td= link_to meeting.name, meeting_path(meeting)
+        td= link_to meeting.uuid, meeting_path(meeting)
         td= meeting.end_at&.strftime("%Y-%m-%d")
         td= meeting.user_id
         td= meeting.created_at&.strftime("%Y-%m-%d")
         td
-          = link_to t('.share', :default => t("helpers.links.share")), meeting_share_path(meeting), :class => 'btn btn-default btn-xs'
+          = link_to t('.share', :default => t("helpers.links.share")), meeting_share_path(meeting.uuid), :class => 'btn btn-default btn-xs'
           '
           = link_to t('.edit', :default => t("helpers.links.edit")), edit_meeting_path(meeting), :class => 'btn btn-default btn-xs'
           '

@@ -7,9 +7,9 @@ p
   br
   = @meeting_date.date
 p
-  strong= model_class.human_attribute_name(:meeting_id) + ':'
+  strong= model_class.human_attribute_name(:meeting_uuid) + ':'
   br
-  = @meeting_date.meeting_id
+  = @meeting_date.meeting_uuid
 p
   strong= model_class.human_attribute_name(:note) + ':'
   br

@@ -7,6 +7,10 @@ p
   br
   = @meeting.name
 p
+  strong= model_class.human_attribute_name(:uuid) + ':'
+  br
+  = @meeting.uuid
+p
   strong= model_class.human_attribute_name(:description) + ':'
   br
   = @meeting.description
@@ -21,7 +25,7 @@ p
     
 = link_to t('.back', :default => t("helpers.links.back")), meetings_path, :class => 'btn btn-default'
 '
-= link_to t('.share', :default => t("helpers.links.share")), meeting_share_path(@meeting), :class => 'btn btn-default'
+= link_to t('.share', :default => t("helpers.links.share")), meeting_share_path(@meeting.uuid), :class => 'btn btn-default'
 '
 = link_to t('.edit', :default => t("helpers.links.edit")), edit_meeting_path(@meeting), :class => 'btn btn-default'
 '

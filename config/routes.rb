@@ -24,20 +24,21 @@ Rails.application.routes.draw do
     resources :user_dates
     resources :users
 
-    get "share", controller: "meeting_maker", action: "show", as: "share"
-    # TODO: maybe using PUT is not very standard. Using a POST seems to be a more cool stuff
-    put "share", controller: "date_maker", action: "create", as: "add_date"
-    delete "share", controller: "date_maker", action: "destroy", as: "rm_date"
-
-    post "subscribe", controller: "subscription_maker", action: "create", as: "subscribe"
-    delete "unsubscribe", controller: "subscription_maker", action: "destroy", as: "unsubscribe"
-
     collection do
       get "shared", controller: "meeting_maker", action: "index", as: "shared"
       get "make", controller: "meeting_maker", action: "new", as: "make_new"
       post "make", controller: "meeting_maker", action: "create", as: "make"
     end
+  end
 
+  scope "meetings/:uuid" do
+    get "share", controller: "meeting_maker", action: "show", as: "meeting_share"
+    # TODO: maybe using PUT is not very standard. Using a POST seems to be a more cool stuff
+    put "share", controller: "date_maker", action: "create", as: "meeting_add_date"
+    delete "share", controller: "date_maker", action: "destroy", as: "meeting_rm_date"
+
+    post "subscribe", controller: "subscription_maker", action: "create", as: "meeting_subscribe"
+    delete "unsubscribe", controller: "subscription_maker", action: "destroy", as: "meeting_unsubscribe"
   end
 
   scope "votes" do

@@ -4,13 +4,15 @@
 table.table.table-striped
   thead
     tr
+      th= model_class.human_attribute_name(:uuid)
       th= model_class.human_attribute_name(:name)
       th= model_class.human_attribute_name(:end_at)
       th= model_class.human_attribute_name(:created_at)
   tbody
     - @meetings.each do |meeting|
       tr
-        td= link_to meeting.name, meeting_share_path(meeting)
+        td= link_to meeting.uuid, meeting_share_path(meeting.uuid)
+        td= link_to meeting.name, meeting_share_path(meeting.uuid)
         td= meeting.end_at&.strftime("%Y-%m-%d")
         td= meeting.created_at&.strftime("%Y-%m-%d")
         td
