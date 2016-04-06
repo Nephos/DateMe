@@ -27,7 +27,14 @@ html lang="en"
           a.navbar-brand href="/"
             | MeetUs
           small.navbar-brand.user-email
-            = user_signed_in? ? "#{current_user.email} (#{current_user.id}) " : "Anonymous "
+            - if user_signed_in?
+              span#current-user-email= current_user.email
+              |  (
+              span#current-user-id= current_user.id
+              | )
+            - else
+              span#current-user Anonymous
+            |  
           .navbar-collapse.collapse.navbar-responsive-collapse
             ul.nav.navbar-nav
               - if user_signed_in?

@@ -20,7 +20,7 @@ constructDateLine = (data, cells) ->
 
 # Inset a new line to the table, with no reference to the database (default value: "no")
 getUserDateLine = (row) ->
-  cells = $.map($("table thead tr:nth-child(1) td"), (idx) -> "<td class='bg-info user_date' user_date_id='' user_id='#{idx.attributes.user_id.value}'></td>")
+  cells = $("table thead tr:nth-child(1) td").map((e, i) -> return "<td class='bg-info user_date' user_date_id='' user_id='#{e.attr('user_id')}'></td>")
   return constructDateLine(row, cells)
 
 setCellState = (cell, state) ->
@@ -30,6 +30,7 @@ setCellState = (cell, state) ->
 
 # Inset a new "user_date"
 insertUserDate = (user_id, meeting_date_id) ->
+  console.log("Try to create an user_date with user_id=#{user_id} and meeting_date_id=#{meeting_date_id}")
   $.ajax(
     method: "POST",
     url: "/votes",
@@ -38,26 +39,27 @@ insertUserDate = (user_id, meeting_date_id) ->
         user_id: user_id,
         meeting_date_id: meeting_date_id,
         state: 'yes'
-  ).done((msg) ->
+  ).success((msg) ->
     user_date_id = msg["id"]
     offset = $("table.poll thead tr td").map((x, y) ->
       offset: x
       user_id: y.attributes.user_id.value
     ).toArray().find((x) -> return (x.user_id == user_id)).offset + 1
-    cell = $("tr[meeting_date_id='#{meeting_date_id}'] td:nth-of-type(#{offset})");
+    cell = $("tr[meeting_date_id='#{meeting_date_id}'] td[user_id='#{user_id}']");
     cell.attr("user_date_id", user_date_id)
     setCellState(cell, msg['state'])
   )
 
 # Update an "user_date" entry
 updateUserDate = (user_date_id, state) ->
+  console.log("Try to update the user_date=#{user_date_id} to state=#{state}")
   $.ajax(
     method: "PATCH",
     url: "/votes/#{user_date_id}",
     data:
       user_date:
         state: state
-  ).done((msg) ->
+  ).success((msg) ->
     cell = $("table.poll td[user_date_id='#{user_date_id}']")
     setCellState(cell, msg['state'])
   )
@@ -69,7 +71,7 @@ getStateFromHtml = (elem) ->
     return "maybe"
   else if elem.hasClass("bg-danger")
     return "no"
-  #return "yes"
+  return ""
 
 getHtmlClassFromState = (state) ->
   if state == "yes"
@@ -78,7 +80,7 @@ getHtmlClassFromState = (state) ->
     return "bg-warning"
   else if state == "no"
     return "bg-danger"
-  #return "bg-primary"
+  return "bg-info"
 
 getNextState = (state) ->
   if state == "yes"
@@ -90,7 +92,12 @@ getNextState = (state) ->
   return "yes"
 
 changeUserDate = (event) ->
-  user_date_id = event.target.attributes.user_date_id.value
+  user_date_id = event.target.attributes.user_date_id
+  if user_date_id
+    user_date_id = user_date_id.value
+  else
+    user_date_id = ""
+
   if user_date_id == ""
     user_id = event.target.attributes.user_id.value
     meeting_date_id = event.target.parentNode.attributes.meeting_date_id.value
@@ -106,7 +113,36 @@ removeLineOnClick = (buttonSelector) ->
     event.target.parentNode.parentNode.remove()
   )
 
+initTablePoll = () ->
+  $.getJSON(document.URL).success((meeting) ->
+    $("table.poll thead tr").html("")
+    $("table.poll tbody").html("")
+    thead = $.map(meeting.users, (user) -> return "<td user_id='#{user.id}'>#{user.name}</td>").join('')
+    $("table.poll thead tr").append("<td></td>#{thead}")
+    user_id = $("#current-user-id")[0].textContent
+    has_delete_links = (user_id == "#{meeting.user_id}")
+    tbody_empty_cells = meeting.users.map((e, i) -> return "<td class='user_date' user_id='#{e.id}'></td>").join('')
+    tbody = meeting.dates.map((e, i) ->
+      delete_link = "<a href=\"/meetings/#{meeting.uuid}/share\" data-method=\"delete\" rel=\"nofollow\" class=\"btn btn-xs btn-danger\">x</a>" if has_delete_links
+      th = "<th>" + (delete_link || "") + "#{e.date_formated}" + "</th>"
+      return "<tr meeting_date_id='#{e.id}'>" + th + tbody_empty_cells + "</tr>"
+    ).join('')
+    $("table.poll tbody").append("#{tbody}")
+    meeting.subscriptions.map((user_date, i) ->
+      cell = $("tr[meeting_date_id='#{user_date.meeting_date_id}'] td[user_id='#{user_date.user_id}']");
+      cell[0].setAttribute("user_date_id", user_date.id) if user_date.id
+      cell.addClass(getHtmlClassFromState(user_date.state))
+    )
+    window.tbody = tbody
+    window.thead = thead
+    window.user_id = user_id
+    window.meeting = meeting
+    return
+  )
+
+
 jQuery ->
+  $(document).on("page:load ready", -> initTablePoll())
   $(document).on("ajax:success", ".meeting-maker-form-remote", (event, data, status, xhr) ->
     # Add the lines
     lines = $("table tbody tr").toArray() # fetch all existing rows

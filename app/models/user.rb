@@ -20,6 +20,13 @@ class User < ActiveRecord::Base
   def name
     self.email.split("@").first.first(NAME_MAX_LENGHT)
   end
+  def attributes
+    if super["email"]
+      super.merge("name" => self.name)
+    else
+      super
+    end
+  end
 
   def has_meeting?(meeting)
     Meeting.where(user_id: self.id, id: meeting.id).count > 0

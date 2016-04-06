@@ -31,7 +31,7 @@ table.table-condensed.poll
   thead
     tr
       th
-      - users.each do |user|
+      /- users.each do |user|
         td user_id="#{user.id}"
           small= user.name + " (#{user.id})"
   tbody
