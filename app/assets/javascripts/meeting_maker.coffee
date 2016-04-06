@@ -142,12 +142,14 @@ jQuery ->
       t = event.target.innerText
       field_name = event.target.parentNode.className.replace("meeting-", "")
       console.log("Will edit '#{field_name}' with '#{t}'")
-      $(event.target).html("<input type='text' name='meeting[#{field_name}]'></input>")
+      type = "input"
+      type = "textarea" if field_name == "description"
+      $(event.target).html("<#{type} type='text' name='meeting[#{field_name}]'>")
       $("input[name='meeting[#{field_name}]']").attr('type', 'date') if field_name == "end_at"
       $("input[name='meeting[#{field_name}]']").attr('required', true) if field_name == "name"
       event.target.children[0].value = t
     )
-    $(document).on("focusout", ".editable input", (event) ->
+    $(document).on("focusout", ".editable input, .editable textarea", (event) ->
       t = event.target.value
       field_name = event.target.parentNode.parentNode.className.replace("meeting-", "")
       $.post(document.URL,
