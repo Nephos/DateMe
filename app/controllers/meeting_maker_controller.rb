@@ -31,6 +31,7 @@ class MeetingMakerController < PrivateController
     @meeting = Meeting.eager_load(:users, :user_dates, :meeting_dates => :user_dates).find_by(uuid: uuid)
     raise ActiveRecord::RecordNotFound if @meeting.nil?
     @meeting_date = MeetingDate.new
+    @comments = @meeting.comments.last(5)
   end
 
   def meeting_params

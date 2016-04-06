@@ -61,6 +61,9 @@ gem 'cancancan', '~> 1.10'
 # uniq string id
 gem 'uuid'
 
+# commentable polls
+gem 'acts_as_commentable'
+
 ### Front
 
 # Template

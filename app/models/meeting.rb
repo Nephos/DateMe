@@ -10,4 +10,7 @@ class Meeting < ActiveRecord::Base
   def generate_uuid
     self.uuid = UUID.new.generate
   end
+
+  acts_as_commentable
+  
 end

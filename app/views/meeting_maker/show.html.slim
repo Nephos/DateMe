@@ -48,3 +48,13 @@ table.table-condensed.poll
           - user_date = dates.find{|d| d.user_id == user_id}
           - present = user_date&.state
           td class="#{UserDate::STATE[present] || 'bg-info'} user_date" user_date_id="#{user_date&.id}" user_id="#{user_id}"
+
+article
+  h4 Comments
+  - @comments.each do |comment|
+    h5
+      = comment.title
+      |  by 
+      small= comment.user.name
+    
+    p= comment.comment

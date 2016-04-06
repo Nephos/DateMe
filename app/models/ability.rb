@@ -11,6 +11,7 @@ class Ability
       cannot :manage, MeetingDate
       cannot :manage, UserDate
       cannot :manage, User
+      cannot :manage, Comment
     end
 
     # https://github.com/CanCanCommunity/cancancan/wiki/Defining-Abilities
