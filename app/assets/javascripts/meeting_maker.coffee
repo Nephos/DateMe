@@ -126,7 +126,7 @@ jQuery ->
       )
   )
   $(document).on("click", ".user_date", (event) -> changeUserDate(event))
-  $( "input[type='date']" ).datepicker(dateFormat: "yy-mm-dd")
+  $(document).on("page:load ready", -> $( "input[type='date']" ).datepicker(dateFormat: "yy-mm-dd"))
 
   # this is not displayed if the current user is not the owner anyway
   insertNewInputs("#add_date", "label[for='date'] input", "<input type=\"date\" class=\"form-control input-sm\" id=\"\" name=\"date[{{ID}}]\">")
