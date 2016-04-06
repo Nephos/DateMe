@@ -1,0 +1,7 @@
+{
+  "name": "MeetUs",
+  "description": "Handle presences, vote, organize, and share your meetings. Ruby on Rails 4 & Postgres",
+  "repository": "https://github.com/Nephos/MeetUs",
+  "logo": "http://www.macnotes.de/images/ruby-on-rails.png",
+  "keywords": ["vote", "poll", "ruby on rails", "sondage"]
+}

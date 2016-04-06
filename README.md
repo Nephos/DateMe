@@ -2,6 +2,8 @@
 
 The project allows you to manage your meetings by sharing polls.
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 # How does it work
 
 ## Install
