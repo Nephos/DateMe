@@ -11,8 +11,12 @@ class SubscriptionMakerController < PrivateController
     default_state = nil
     sql_query_mass_insert = "INSERT INTO user_dates (\"user_id\", \"meeting_date_id\", \"updated_at\", \"created_at\", \"state\") VALUES "
     sql_query_mass_insert += data.map {|row| "(#{row[:user_id]}, #{row[:meeting_date_id]}, '#{current_time}', '#{current_time}', '#{default_state}')" }.join(", ")
-    n = ActiveRecord::Base.transaction { UserDate.connection.execute sql_query_mass_insert }.cmd_tuples
-    redirect_to({action: :show, controller: :meeting_maker}, {notice: "Added to the poll, and #{n} vote#{n>1??s:nil} prepared for you"})
+    begin
+      n = ActiveRecord::Base.transaction { UserDate.connection.execute sql_query_mass_insert }.cmd_tuples
+      redirect_to({action: :show, controller: :meeting_maker}, {notice: "Added to the poll, and #{n} vote#{n>1??s:nil} prepared for you"})
+    rescue ActiveRecord::RecordNotUnique
+      redirect_to({action: :show, controller: :meeting_maker}, {notice: "Cannot subscribe to this poll, you're already part."})
+    end
   end
 
   # unsubscribe
