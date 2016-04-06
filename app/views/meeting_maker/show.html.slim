@@ -1,23 +1,36 @@
 .page-header
   h1
-    | Meeting #{@meeting.name}
+    | Meeting 
+    span.meeting-name
+      span.editable
+        | #{@meeting.name || "undefined"}
 
 p
   strong= Meeting.human_attribute_name(:description) + ':'
   br
-  = @meeting.description
+  span.meeting-description
+    span.editable= @meeting.description || "undefined"
 p
   strong= Meeting.human_attribute_name(:end_at) + ':'
   br
-  = @meeting.end_at
+  span.meeting-end_at
+    span.editable= @meeting.end_at || "undefined"
 p
   strong= Meeting.human_attribute_name(:user_id) + ':'
   br
-  = @meeting.user_name
+  span.meeting-user_id
+    span= @meeting.user_id
+p
+  strong= Meeting.human_attribute_name(:user_name) + ':'
+  br
+  span.meeting-user_name
+    span= @meeting.user_name
+
 p
   strong= Meeting.human_attribute_name(:uuid) + ':'
   br
-  = @meeting.uuid
+  span.meeting_uuid
+    span= @meeting.uuid
 
 - if current_user.has_meeting? @meeting
   = render partial: "form_date"

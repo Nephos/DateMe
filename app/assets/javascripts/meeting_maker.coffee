@@ -107,6 +107,9 @@ removeLineOnClick = (buttonSelector) ->
   )
 
 jQuery ->
+  current_user_id = $("#current-user-id").text().trim()
+  owner_user_id = $(".meeting-user_id").text().trim()
+  is_owner = (current_user_id == owner_user_id)
   $(document).on("ajax:success", ".meeting-maker-form-remote", (event, data, status, xhr) ->
     # Add the lines
     lines = $("table tbody tr").toArray() # fetch all existing rows
@@ -132,3 +135,25 @@ jQuery ->
   insertNewInputs("#add_date", "label[for='date'] input", "<input type=\"date\" class=\"form-control input-sm\" id=\"\" name=\"date[{{ID}}]\">")
   insertNewInputs("#add_time", "label[for='time'] input", "<input type=\"time\" class=\"form-control input-sm\" id=\"\" name=\"time[{{ID}}]\">")
   removeLineOnClick("table.poll th .btn-danger")
+  if is_owner
+    $(document).on("click", ".editable", (event) ->
+      console.log(event)
+      console.log(event.target)
+      t = event.target.innerText
+      field_name = event.target.parentNode.className.replace("meeting-", "")
+      console.log("Will edit '#{field_name}' with '#{t}'")
+      $(event.target).html("<input type='text' name='meeting[#{field_name}]'></input>")
+      $("input[name='meeting[#{field_name}]']").attr('type', 'date') if field_name == "end_at"
+      $("input[name='meeting[#{field_name}]']").attr('required', true) if field_name == "name"
+      event.target.children[0].value = t
+    )
+    $(document).on("focusout", ".editable input", (event) ->
+      t = event.target.value
+      field_name = event.target.parentNode.parentNode.className.replace("meeting-", "")
+      $.post(document.URL,
+        meeting:
+          "#{field_name}": t # TODO: find a other way to write this shit
+      ).success((data) ->
+        $(event.target.parentNode.parentNode).html("<span class='editable'>#{data[field_name]}")
+      )
+  )
