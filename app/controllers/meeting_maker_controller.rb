@@ -26,6 +26,15 @@ class MeetingMakerController < PrivateController
     #redirect_to root_url, alert: "Not ready yet"
   end
 
+  def update
+    @meeting = Meeting.where(user: current_user).find_by(uuid: params[:meeting_uuid])
+    if @meeting.update(meeting_params)
+      render json: @meeting, status: :ok
+    else
+      render json: @meeting.errors, status: :unprocessable_entity
+    end
+  end
+
   private
   def load_share(uuid)
     @meeting = Meeting.eager_load(:users, :user_dates, :meeting_dates => :user_dates).find_by(uuid: uuid)

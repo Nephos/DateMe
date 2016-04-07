@@ -32,14 +32,16 @@ Rails.application.routes.draw do
     end
   end
 
-  scope "meetings/:meeting_uuid" do
-    get "share", controller: "meeting_maker", action: "show", as: "meeting_share"
-    # TODO: maybe using PUT is not very standard. Using a POST seems to be a more cool stuff
-    put "share", controller: "date_maker", action: "create", as: "meeting_add_date"
-    delete "share", controller: "date_maker", action: "destroy", as: "meeting_rm_date"
-
-    post "subscribe", controller: "subscription_maker", action: "create", as: "meeting_subscribe"
-    delete "unsubscribe", controller: "subscription_maker", action: "destroy", as: "meeting_unsubscribe"
+  scope "meetings" do
+    scope ":meeting_uuid" do
+      get "share", controller: "meeting_maker", action: "show", as: "meeting_share"
+      post "share", controller: "meeting_maker", action: "update", as: "meeting_update"
+      post "subscribe", controller: "subscription_maker", action: "create", as: "meeting_subscribe"
+      delete "unsubscribe", controller: "subscription_maker", action: "destroy", as: "meeting_unsubscribe"
+      # TODO: maybe using PUT is not very standard. Using a POST seems to be a more cool stuff
+      put "date", controller: "date_maker", action: "create", as: "meeting_add_date"
+    end
+    delete "date/:meeting_date_id", controller: "date_maker", action: "destroy", as: "meeting_rm_date"
   end
 
   scope "votes" do
