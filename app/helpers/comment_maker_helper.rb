@@ -1,0 +1,2 @@
+module CommentMakerHelper
+end

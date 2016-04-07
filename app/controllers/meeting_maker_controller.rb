@@ -41,6 +41,7 @@ class MeetingMakerController < PrivateController
     raise ActiveRecord::RecordNotFound if @meeting.nil?
     @meeting_date = MeetingDate.new
     @comments = @meeting.comments.last(5)
+    @comment = Comment.new
   end
 
   def meeting_params
