@@ -160,3 +160,8 @@ jQuery ->
       $(event.target.parentNode.parentNode).html("<span class='editable'>#{data[field_name]}")
     )
   )
+  $(document).on("ajax:success", "#new_comment", (event, data, status, xhr) ->
+    $("#comments-list").append("<article class=\"comment\">
+    <h5>#{data.title}<small> by #{data.user_name}</small></h5>
+    <p>#{data.comment}")
+  )

@@ -1,4 +1,5 @@
 class Meeting < ActiveRecord::Base
+  acts_as_commentable
   has_many :meeting_dates, foreign_key: 'meeting_uuid', primary_key: 'uuid', :dependent => :destroy # requires to remove the meeting_dates.user_dates
   has_many :user_dates, through: 'meeting_dates'
   belongs_to :user
@@ -10,6 +11,7 @@ class Meeting < ActiveRecord::Base
   def generate_uuid
     self.uuid = UUID.new.generate
   end
+
 
   before_save :default_description
   def default_description

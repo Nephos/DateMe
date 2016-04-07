@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   root to: "home#index"
   devise_for :users
+  resources :comments
 
   resources :users do
     resources :user_dates
@@ -39,6 +40,7 @@ Rails.application.routes.draw do
       delete "unsubscribe", controller: "subscription_maker", action: "destroy", as: "meeting_unsubscribe"
       # TODO: maybe using PUT is not very standard. Using a POST seems to be a more cool stuff
       put "date", controller: "date_maker", action: "create", as: "meeting_add_date"
+      post "comment", controller: "comment_maker", action: "create", as: "meeting_add_comment"
     end
     delete "date/:meeting_date_id", controller: "date_maker", action: "destroy", as: "meeting_rm_date"
   end

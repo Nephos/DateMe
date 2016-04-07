@@ -61,3 +61,31 @@ table.table-condensed.poll
           - user_date = dates.find{|d| d.user_id == user_id}
           - present = user_date&.state
           td class="#{UserDate::STATE[present] || 'bg-info'} user_date" user_date_id="#{user_date&.id}" user_id="#{user_id}"
+
+.row.comments
+  = form_for(@comment, url: {controller: "comment_maker", action: "create"}, data: {type: :json}, remote: true, html: { class: "form form-horizontal meeting" }) do |f|
+    .form-group
+      = f.label :title, :class => 'control-label col-lg-2'
+      .col-lg-10
+        = f.text_field :title, :class => 'form-control'
+      = f.error_span(:title)
+    .form-group
+      = f.label :comment, :class => 'control-label col-lg-2'
+      .col-lg-10
+        = f.text_area :comment, :class => 'form-control'
+      = f.error_span(:comment)
+    .form-group
+      .col-lg-offset-2.col-lg-10
+        = f.submit nil, :class => 'btn btn-primary'
+        '
+        = link_to t('.cancel', :default => t("helpers.links.cancel")), meeting_share_path(@meeting.uuid), :class => 'btn'
+
+  #comments-list
+    h4 Comments
+    - @comments.each do |comment|
+      article.comment
+        h5
+          = comment.title
+          small
+            |  by #{comment.user.name}
+        p= comment.comment
