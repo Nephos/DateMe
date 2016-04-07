@@ -1,7 +1,10 @@
 class MeetingMakerController < PrivateController
 
   def index
-    @meetings = Meeting.where(user: current_user).order(updated_at: 'desc').paginate(:page => params[:page])
+    #@meetings = Meeting.where(user: current_user).order(updated_at: 'desc').paginate(:page => params[:page])
+    #@meetings = Meeting.joins("JOIN meeting_dates ON meeting_dates.meeting_uuid = meetings.uuid LEFT OUTER JOIN user_dates ON meeting_dates.id = user_dates.meeting_date_id").where(["WHERE user_dates.user_id = ? OR meetings.user_id = ?", current_user.id, current_user.id]).uniq
+    @meetings = Meeting.joins("JOIN meeting_dates ON meeting_dates.meeting_uuid = meetings.uuid LEFT OUTER JOIN user_dates ON meeting_dates.id = user_dates.meeting_date_id").where(
+      ["user_dates.user_id = :uid OR meetings.user_id = :mid ", {uid: current_user.id, mid: current_user.id}]).uniq.order(updated_at: 'desc').paginate(:page => params[:page])
   end
 
   def new
