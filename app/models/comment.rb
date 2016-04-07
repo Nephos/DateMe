@@ -12,9 +12,11 @@ class Comment < ActiveRecord::Base
 
   # NOTE: Comments belong to a user
   belongs_to :user
+  delegate :name, to: User, prefix: true
 
-  PUBLIC_ATTRIBUTES = %w(user_id title comment)
+  PUBLIC_ATTRIBUTES = %w(user_id title comment user_name)
   def public_attributes
     self.attributes.keep_if{|k,v| PUBLIC_ATTRIBUTES.include? k}
   end
+
 end

@@ -4,7 +4,7 @@ class CommentMakerController < PrivateController
     @comment = Comment.new(comment_params.merge({commentable: meeting, user: current_user}))
 
     if @comment.save
-      render json: @comment.public_attributes, status: :created
+      render json: @comment.public_attributes.merge({user_name: current_user.name}), status: :created
     else
       render json: @comment.errors, status: :unprocessable_entity
     end

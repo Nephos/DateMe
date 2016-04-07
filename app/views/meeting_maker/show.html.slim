@@ -72,7 +72,7 @@ table.table-condensed.poll
     .form-group
       = f.label :comment, :class => 'control-label col-lg-2'
       .col-lg-10
-        = f.text_field :comment, :class => 'form-control'
+        = f.text_area :comment, :class => 'form-control'
       = f.error_span(:comment)
     .form-group
       .col-lg-offset-2.col-lg-10
@@ -80,11 +80,12 @@ table.table-condensed.poll
         '
         = link_to t('.cancel', :default => t("helpers.links.cancel")), meeting_share_path(@meeting.uuid), :class => 'btn'
 
-  article
+  #comments-list
     h4 Comments
     - @comments.each do |comment|
-      h5
-        = comment.title
-        |  by 
-        small= comment.user.name
-      p= comment.comment
+      article.comment
+        h5
+          = comment.title
+          small
+            |  by #{comment.user.name}
+        p= comment.comment
