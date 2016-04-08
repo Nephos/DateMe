@@ -3,6 +3,7 @@ require 'test_helper'
 class MeetingsControllerTest < ActionController::TestCase
   setup do
     @meeting = meetings(:one)
+    sign_in users(:admin)
   end
 
   test "should get index" do
@@ -18,7 +19,7 @@ class MeetingsControllerTest < ActionController::TestCase
 
   test "should create meeting" do
     assert_difference('Meeting.count') do
-      post :create, meeting: { dates: @meeting.dates, description: @meeting.description, end_at: @meeting.end_at, name: @meeting.name }
+      post :create, meeting: { description: @meeting.description, end_at: @meeting.end_at, name: @meeting.name }
     end
 
     assert_redirected_to meeting_path(assigns(:meeting))
@@ -35,7 +36,7 @@ class MeetingsControllerTest < ActionController::TestCase
   end
 
   test "should update meeting" do
-    patch :update, id: @meeting, meeting: { dates: @meeting.dates, description: @meeting.description, end_at: @meeting.end_at, name: @meeting.name }
+    patch :update, id: @meeting, meeting: { description: @meeting.description, end_at: @meeting.end_at, name: @meeting.name }
     assert_redirected_to meeting_path(assigns(:meeting))
   end
 
