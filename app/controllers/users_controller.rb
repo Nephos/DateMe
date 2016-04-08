@@ -43,7 +43,7 @@ class UsersController < PrivateController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
-      if @user.update(user_params)
+      if @user.update(user_params.keep_if{|k, v| k != "password" || !v.blank? })
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
@@ -73,6 +73,6 @@ class UsersController < PrivateController
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       #params.fetch(:user, {})
-      params.require(:user).permit(:password, :email, :roles, :reset_password_token)
+      params.require(:user).permit(:email, :name, :password, :roles, :reset_password_token)
     end
 end

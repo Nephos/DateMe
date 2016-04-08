@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
 
   NAME_MAX_LENGHT = 8
   def name
-    self.email.split("@").first.first(NAME_MAX_LENGHT)
+    self.attributes["name"] || self.email.to_s.split("@").first.to_s.first(NAME_MAX_LENGHT)
   end
 
   def owner?(obj)
