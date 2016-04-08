@@ -21,8 +21,8 @@ class User < ActiveRecord::Base
     self.email.split("@").first.first(NAME_MAX_LENGHT)
   end
 
-  def has_meeting?(meeting)
-    Meeting.where(user_id: self.id, id: meeting.id).count > 0
+  def owner?(obj)
+    obj.user_id == self.id
   end
 
 end

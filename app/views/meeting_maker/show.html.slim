@@ -32,7 +32,7 @@ p
   span.meeting_uuid
     span= @meeting.uuid
 
-- if current_user.has_meeting? @meeting
+- if current_user.owner?(@meeting)
   = render partial: "form_date"
 - if @meeting.users.include? current_user
   = link_to "Unsubscribe", meeting_unsubscribe_path(@meeting.uuid), method: "DELETE", class: "btn btn-danger"
@@ -48,11 +48,11 @@ table.table-condensed.poll
         td user_id="#{user.id}"
           small= user.name + " (#{user.id})"
   tbody
-    / sort is done by Ruby. It does allow slq optimisation via joins
+    / sort is done by Ruby. It does allow slq optimisation via joins, edit: who cares ? js handle this now
     - @meeting.meeting_dates.sort_by(&:date).each_with_index do |meeting_date|
       tr meeting_date_id="#{meeting_date.id}"
         th
-          - if current_user.has_meeting? @meeting
+          - if current_user.owner? @meeting
             = link_to 'x', meeting_rm_date_path(meeting_date), :method => :delete, :class => 'btn btn-xs btn-danger'
             |  
           = meeting_date.date_formated
