@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+  NAME_MIN_LENGTH = 2
+  NAME_MAX_LENGTH = 8
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -8,6 +11,8 @@ class User < ActiveRecord::Base
   has_many :meeting_dates, through: :user_dates
   has_many :meetings, through: :meeting_dates
 
+  validates :name, length: {in: NAME_MIN_LENGTH..NAME_MAX_LENGTH}, uniqueness: true
+
   def roles
     self.attributes["roles"].to_s.split(",")
   end
@@ -16,9 +21,8 @@ class User < ActiveRecord::Base
     roles.include? "admin"
   end
 
-  NAME_MAX_LENGHT = 8
   def name
-    self.attributes["name"] || self.email.to_s.split("@").first.to_s.first(NAME_MAX_LENGHT)
+    self.attributes["name"] || self.email.to_s.split("@").first.to_s.first(NAME_MAX_LENGTH)
   end
 
   def owner?(obj)
