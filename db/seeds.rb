@@ -1,4 +1,4 @@
-u1 = User.create(email: "admin@localhost.localdomain", password: "The Admin is an amazing guy", roles: "admin")
+u1 = User.create(email: "admin@localhost.localdomain", password: "The Admin is an amazing guy", roles: %w(admin) )
 m1 = Meeting.create(user: u1, end_at: Time.now + 60.days, name: "The first poll", description: "Poll seeded")
 md1 = MeetingDate.create(meeting: m1, date: Time.now + 7.days)
 md2 = MeetingDate.create(meeting: m1, date: Time.now + 7.days + 1.hours)

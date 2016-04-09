@@ -12,10 +12,7 @@ class User < ActiveRecord::Base
   has_many :meetings, through: :meeting_dates
 
   validates :name, length: {in: NAME_MIN_LENGTH..NAME_MAX_LENGTH}, uniqueness: true
-
-  def roles
-    self.attributes["roles"].to_s.split(",")
-  end
+  validates :roles, null: false
 
   def admin?
     roles.include? "admin"
