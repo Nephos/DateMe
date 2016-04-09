@@ -12,13 +12,13 @@ class Meeting < ActiveRecord::Base
     self.uuid = UUID.new.generate
   end
 
-
   before_save :default_description
   def default_description
     self.description = "no description provided" if self.description.to_s.size == 0
   end
 
-  validates :name, absence: false, length: { min: 4 }, allow_blank: false
+  validates :name, absence: false, allow_blank: false
+  validates :name, length: {in: 4..64}, uniqueness: true
   validates :description, absence: false, allow_blank: false
 
 end

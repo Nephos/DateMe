@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
   has_many :meetings, through: :meeting_dates
 
   validates :name, length: {in: NAME_MIN_LENGTH..NAME_MAX_LENGTH}, uniqueness: true
-  validates :roles, null: false
+  validates :roles, null: false # TODO: add validation on the content
 
   def admin?
     roles.include? "admin"
