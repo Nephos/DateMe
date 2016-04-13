@@ -60,7 +60,7 @@ table.table-condensed.poll
         - users.map(&:id).each do |user_id|
           - user_date = dates.find{|d| d.user_id == user_id}
           - present = user_date&.state
-          td class="#{UserDate::STATE[present] || 'bg-info'} user_date" user_date_id="#{user_date&.id}" user_id="#{user_id}"
+          td class="#{UserDate::STATES[present] || 'bg-info'} user_date" user_date_id="#{user_date&.id}" user_id="#{user_id}"
 
 .row.comments
   = form_for(@comment, url: {controller: "comment_maker", action: "create"}, data: {type: :json}, remote: true, html: { class: "form form-horizontal meeting" }) do |f|
