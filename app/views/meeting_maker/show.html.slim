@@ -1,32 +1,45 @@
 .page-header
   h1
-    | Meeting #{@meeting.name}
+    | Meeting 
+    span.meeting-name
+      span.editable
+        | #{@meeting.name || "undefined"}
 
 p
   strong= Meeting.human_attribute_name(:description) + ':'
   br
-  = @meeting.description
+  span.meeting-description
+    span.editable= @meeting.description || "undefined"
 p
   strong= Meeting.human_attribute_name(:end_at) + ':'
   br
-  = @meeting.end_at
+  span.meeting-end_at
+    span.editable= @meeting.end_at || "undefined"
 p
   strong= Meeting.human_attribute_name(:user_id) + ':'
   br
-  = @meeting.user_name
+  span.meeting-user_id
+    span= @meeting.user_id
+p
+  strong= Meeting.human_attribute_name(:user_name) + ':'
+  br
+  span.meeting-user_name
+    span= @meeting.user_name
+
 p
   strong= Meeting.human_attribute_name(:uuid) + ':'
   br
-  = @meeting.uuid
+  span.meeting_uuid
+    span= @meeting.uuid
 
-- if current_user.has_meeting? @meeting
+- if current_user.owner?(@meeting)
   = render partial: "form_date"
 - if @meeting.users.include? current_user
   = link_to "Unsubscribe", meeting_unsubscribe_path(@meeting.uuid), method: "DELETE", class: "btn btn-danger"
 - else
   = link_to "Subscribe", meeting_subscribe_path(@meeting.uuid), method: "POST", class: "btn btn-success"
 
-- users = @meeting.users.order(:id).uniq.to_a
+- users = @meeting.users.select("DISTINCT ON (users.id) users.*").order(:id).to_a
 table.table-condensed.poll
   thead
     tr
@@ -35,11 +48,11 @@ table.table-condensed.poll
         td user_id="#{user.id}"
           small= user.name + " (#{user.id})"
   tbody
-    / sort is done by Ruby. It does allow slq optimisation via joins
+    / sort is done by Ruby. It does allow slq optimisation via joins, edit: who cares ? js handle this now
     - @meeting.meeting_dates.sort_by(&:date).each_with_index do |meeting_date|
       tr meeting_date_id="#{meeting_date.id}"
         th
-          - if current_user.has_meeting? @meeting
+          - if current_user.owner? @meeting
             = link_to 'x', meeting_rm_date_path(meeting_date), :method => :delete, :class => 'btn btn-xs btn-danger'
             |  
           = meeting_date.date_formated
@@ -47,4 +60,32 @@ table.table-condensed.poll
         - users.map(&:id).each do |user_id|
           - user_date = dates.find{|d| d.user_id == user_id}
           - present = user_date&.state
-          td class="#{UserDate::STATE[present] || 'bg-info'} user_date" user_date_id="#{user_date&.id}" user_id="#{user_id}"
+          td class="#{UserDate::STATES[present] || 'bg-info'} user_date" user_date_id="#{user_date&.id}" user_id="#{user_id}"
+
+.row.comments
+  = form_for(@comment, url: {controller: "comment_maker", action: "create"}, data: {type: :json}, remote: true, html: { class: "form form-horizontal meeting" }) do |f|
+    .form-group
+      = f.label :title, :class => 'control-label col-lg-2'
+      .col-lg-10
+        = f.text_field :title, :class => 'form-control'
+      = f.error_span(:title)
+    .form-group
+      = f.label :comment, :class => 'control-label col-lg-2'
+      .col-lg-10
+        = f.text_area :comment, :class => 'form-control'
+      = f.error_span(:comment)
+    .form-group
+      .col-lg-offset-2.col-lg-10
+        = f.submit nil, :class => 'btn btn-primary'
+        '
+        = link_to t('.cancel', :default => t("helpers.links.cancel")), meeting_share_path(@meeting.uuid), :class => 'btn'
+
+  #comments-list
+    h4 Comments
+    - @comments.each do |comment|
+      article.comment
+        h5
+          = comment.title
+          small
+            |  by #{comment.user.name}
+        p= comment.comment

@@ -1,0 +1,36 @@
+= form_for @comment, html: { class: "form form-horizontal comment" } do |f|
+  .form-group
+    = f.label :title, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :title, :class => 'form-control'
+    = f.error_span(:title)
+  .form-group
+    = f.label :comment, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :comment, :class => 'form-control'
+    = f.error_span(:comment)
+  .form-group
+    = f.label :commentable_id, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :commentable_id, :class => 'form-control'
+    = f.error_span(:commentable_id)
+  .form-group
+    = f.label :commentable_type, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :commentable_type, :class => 'form-control'
+    = f.error_span(:commentable_type)
+  .form-group
+    = f.label :user_id, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :user_id, :class => 'form-control'
+    = f.error_span(:user_id)
+  .form-group
+    = f.label :role, :class => 'control-label col-lg-2'
+    .col-lg-10
+      = f.text_field :role, :class => 'form-control'
+    = f.error_span(:role)
+  .form-group
+    .col-lg-offset-2.col-lg-10
+      = f.submit nil, :class => 'btn btn-primary'
+      '
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), comments_path, :class => 'btn'

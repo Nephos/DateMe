@@ -28,13 +28,12 @@ html lang="en"
             | MeetUs
           small.navbar-brand.user-email
             - if user_signed_in?
-              span#current-user-email= current_user.email
+              span#current-user-name= link_to current_user.name, edit_user_registration_path
               |  (
               span#current-user-id= current_user.id
               | )
             - else
-              span#current-user Anonymous
-            |  
+              | Anonymous
           .navbar-collapse.collapse.navbar-responsive-collapse
             ul.nav.navbar-nav
               - if user_signed_in?
@@ -45,6 +44,7 @@ html lang="en"
                   li= link_to "Meeting Dates", meeting_dates_path
                   li= link_to "User Dates", user_dates_path
                   li= link_to "Users", users_path
+                li= link_to "My Account", edit_user_registration_path
                 li= link_to "Logout", destroy_user_session_path, method: :delete
               - else
                 li= link_to "Sign in", new_user_session_path

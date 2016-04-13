@@ -2,10 +2,10 @@
 
 one:
   date: 2016-03-31 17:57:08
-  meeting_id: 
+  meeting_uuid: ba1ce170-dfa0-0133-50aa-00fa5b145766
   note: MyString
 
 two:
   date: 2016-03-31 17:57:08
-  meeting_id: 
+  meeting_uuid: c6ad07c0-dda3-0133-f9dc-00fa5b145766
   note: MyString

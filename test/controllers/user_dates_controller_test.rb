@@ -3,6 +3,7 @@ require 'test_helper'
 class UserDatesControllerTest < ActionController::TestCase
   setup do
     @user_date = user_dates(:one)
+    sign_in users(:admin)
   end
 
   test "should get index" do
