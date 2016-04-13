@@ -21,4 +21,14 @@ class Meeting < ActiveRecord::Base
   validates :name, length: {in: 4..64}, uniqueness: true
   validates :description, absence: false, allow_blank: false
 
+  scope :owned, -> (current_user) {
+    joins("JOIN meeting_dates ON meeting_dates.meeting_uuid = meetings.uuid LEFT OUTER JOIN user_dates ON meeting_dates.id = user_dates.meeting_date_id").where(
+    ["user_dates.user_id = :uid OR meetings.user_id = :mid ", {uid: current_user.id, mid: current_user.id}]
+    ).uniq
+  }
+
+  scope :full_load, -> () {
+    eager_load(:users, :user_dates, :meeting_dates => :user_dates)
+  }
+
 end
