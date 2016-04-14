@@ -39,7 +39,7 @@ p
 - else
   = link_to "Subscribe", meeting_subscribe_path(@meeting.uuid), method: "POST", class: "btn btn-success"
 
-- users = @meeting.users.select("DISTINCT ON (users.id) users.*").order(:id).to_a
+- users = @meeting.users.order(:id).to_a
 table.table-condensed.poll
   thead
     tr
