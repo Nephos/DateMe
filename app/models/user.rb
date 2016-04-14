@@ -14,12 +14,15 @@ class User < ActiveRecord::Base
   validates :name, length: {in: NAME_MIN_LENGTH..NAME_MAX_LENGTH}, uniqueness: true
   validates :roles, null: false # TODO: add validation on the content
 
-  def admin?
-    roles.include? "admin"
+  before_save :name_fill
+  def name_fill
+    if self.name.to_s.empty?
+      self.name = self.email.split("@").to_s.first(NAME_MAX_LENGTH)
+    end
   end
 
-  def name
-    self.attributes["name"] || self.email.to_s.split("@").first.to_s.first(NAME_MAX_LENGTH)
+  def admin?
+    roles.include? "admin"
   end
   def attributes
     if super["email"]
